@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Editor / temp
+*.swp
+*~
+.idea/
+.vscode/
+
+# LaTeX build artifacts (if the paper is later built from .tex)
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
