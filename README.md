@@ -1,5 +1,7 @@
 # C2CS — Code to Common Semantics
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20780441.svg)](https://doi.org/10.5281/zenodo.20780441)
+
 **C2CS** explores whether modern Large Language Models can infer the *semantics* of executable
 software well enough to improve security decisions — in particular, to generate or refine
 least-privilege access policy.
@@ -38,6 +40,16 @@ C2CS/
 
 Working draft, in preprint/conference format. The whitepaper lives at
 [`paper/c2cs-whitepaper.md`](paper/c2cs-whitepaper.md).
+
+## Citation
+
+If you reference this work, please cite it via its DOI:
+
+> Törnquist, C. (2026). *C2CS: Code to Common Semantics.* Zenodo. https://doi.org/10.5281/zenodo.20780441
+
+The DOI above is the **concept DOI** — it always resolves to the latest version. To cite a
+specific version, use that version's DOI (e.g. v0.1.0: `10.5281/zenodo.20780442`). A
+[`CITATION.cff`](CITATION.cff) is included so GitHub shows a "Cite this repository" button.
 
 ## License
 
