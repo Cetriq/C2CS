@@ -1,7 +1,15 @@
 # ADR-0009: The Claim Model — the atom of the standard
 
-**Status:** Proposed
+**Status:** Accepted (2026-07-28)
 **Date:** 2026-07-28
+
+> Accepted with amendments from review: the semantic-identity invariant added (identical
+> category + scope + polarity ⇒ semantically identical, regardless of attribution), the
+> registry's role sharpened to *sole source of claim semantics*, the Tier-2 parallel
+> definition lifted out to a future Concept Model ADR to keep this one clean, and the
+> principle promoted to a recurring design axiom. *Polarity* was questioned and kept —
+> it names positive/negative assertion without importing permission/prohibition as
+> separate object types.
 
 ## Principle
 
@@ -43,7 +51,9 @@ A claim is normatively defined as four parts:
    `subject + contract digest + claim-id`.
 2. **Category** — a reference into the registry, which supplies the claim's *meaning*, its
    *matcher grammar*, and its *observation mapping* (its truth conditions). A claim without
-   a registry category is not a claim.
+   a registry category is not a claim: **the registry is the sole source of claim
+   semantics** — no document, tool, or qualifier may add to or override what the category
+   defines.
 3. **Scope** — the matcher attributes (host, path, direction, …) drawn from the category's
    grammar, bounding what the claim covers.
 4. **Polarity** — *capability* (permissive: this MAY happen) or *prohibition* (`forbidden`:
@@ -56,6 +66,11 @@ declared → `by`, `date`, optional `promoted_from`; inferred → `confidence`, 
 **Invariants:**
 - A claim's meaning is exhausted by category + scope + polarity. Attribution identifies and
   contextualizes; it MUST NOT change what the claim states.
+- **Two claims with identical category, scope, and polarity are semantically identical,
+  regardless of attribution.** This is the previous invariant stated as an equivalence: it
+  is what makes promotion meaning-preserving (the body survives the move between documents
+  unchanged), what makes matching well-defined (the engine compares bodies, never origins),
+  and what makes deduplication and diffing of claims possible at all.
 - Claims are evaluated only by a verification engine (ADR-0003); no claim evaluates itself.
 - `[]` (known empty) and `not-analyzed` (unknown) are **category-level knowledge states,
   not claims** (ADR-0006) — which is why a verdict over an empty category references the
@@ -75,8 +90,12 @@ to the normative set); conformance fixtures for document validity derive from it
   document schemas validate the core structurally and the attribution profile by kind.
 - Registry entry format gains explicit slots: meaning, scope vocabulary (matcher grammar),
   observation mapping — one definition per category, as ADR-0003 already requires.
-- Tier-2 concepts get the parallel definition (identity + namespaced vocabulary + meaning,
-  no truth conditions), closing the loop with ADR-0002.
+- The principle joins the spec's recurring design axioms (alongside ADR-0001's
+  normative/descriptive, ADR-0002's tier principle, and ADR-0006's unknown-is-first-class):
+  it is the sharpest available statement of the Tier 1 / Tier 2 boundary.
+- Tier-2 concepts deliberately do **not** get their parallel definition here — a future
+  **Concept Model** ADR will define the concept atom (identity + namespaced vocabulary +
+  meaning, no truth conditions), keeping this ADR clean and claim-only.
 - Gaming vector: semantics smuggled into attribution (e.g. tooling that treats low
   `confidence` as narrowing a claim's scope). The invariant above makes that a spec
   violation, checkable in fixtures.
