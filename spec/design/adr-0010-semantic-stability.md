@@ -1,15 +1,31 @@
 # ADR-0010: Semantic stability
 
-**Status:** Proposed
+**Status:** Accepted (2026-07-28)
 **Date:** 2026-07-28
 
-## Principle
+> Accepted with amendments from review: the tie-breaker principle added (semantic stability
+> outranks convenience), the editorial-clarification rule restated implementer-facing, and
+> terminology unified on *semantic identifier*. Review also grouped this ADR with 0002,
+> 0007, and 0008 as the standard's "constitution" — the decisions that are promises to the
+> future rather than technical model; the index now reflects that grouping.
+
+## Principles
 
 **The meaning of an existing semantic identifier MUST never change.**
 
 Vocabularies may *add*, *deprecate*, and *replace*. They may never *redefine*. If a meaning
 must change, that is a new identifier — `customer` may not mean something different in
 registry 1.4 than it did in 1.0, ever.
+
+**Semantic stability outranks convenience.** Whenever the choice stands between reusing an
+existing name and creating a new one, the standard always chooses the new name
+(`customer-profile`, `customer-account`) — never a quiet repurposing of `customer`. No
+version qualifiers, no aliases, no migration layers: the simplest rule is the durable one.
+
+Terminology: the rule speaks of *semantic identifiers* throughout — Tier-1 categories and
+matcher attributes, central Tier-2 concepts, relation vocabulary, verdict values,
+conformance class names, and predicate type URIs are all instances. *Registry entry* below
+means the record that carries an identifier's definition.
 
 ## Context
 
@@ -23,7 +39,10 @@ ecosystem (HTTP methods, MIME types, IANA registries, OpenTelemetry semantic con
 survives on this one rule; registries that allowed redefinition have produced decades of
 ambiguity. With documents that are signed and immutable (ADR-0004) and interpretable
 forever (ADR-0007), a meaning shift would retroactively falsify existing attestations —
-the worst possible failure for a standard whose product is dependability.
+the worst possible failure for a standard whose product is dependability. In that sense
+this ADR fixes the standard's view of time: history is immutable, and the signed chain of
+contracts, assessments, and verdicts only holds because the words they use cannot move
+under them.
 
 ## Options
 
@@ -49,7 +68,9 @@ type URIs. Mechanics:
   documents, it never invalidates old ones.
 - Editorial clarification of an entry's prose is allowed only where it does not alter what
   conforming implementations accept or produce; where the conformance fixtures would
-  change, it is a redefinition, and redefinition means a new identifier.
+  change, it is a redefinition, and redefinition means a new identifier. Implementer-facing
+  restatement of the same rule: **editorial clarification MUST NOT require existing
+  conforming implementations to change behavior.**
 - Vendor namespaces (`acme.*`) are outside the standard's authority, but promotion into the
   central registry (ADR-0002) is a one-way stability commitment: from promotion onward the
   identifier is frozen like any other.
