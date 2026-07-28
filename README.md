@@ -34,6 +34,7 @@ C2CS/
 │   └── figures/
 ├── spec/
 │   ├── c2cs-schema-v0.1.md   # draft model format ("the IR")
+│   ├── design/               # ADRs — load-bearing design decisions
 │   └── examples/
 ├── examples/
 └── experiments/
