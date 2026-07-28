@@ -10,7 +10,7 @@ third-party library makes is observable behavior of the service — but whose *c
 v1 should not solve aggregation of claims across components. But identity and referencing are
 one-way doors: if IDs and references cannot address "a claim, in a document, about a subject"
 unambiguously, composition can never be added later without breaking every existing document.
-The document split in ADR-0001 already forces cross-document references (evidence → contract),
+The document split in ADR-0001 already forces cross-document references (assessment → contract),
 so identity must be settled now regardless.
 
 ## Options
@@ -50,9 +50,9 @@ contract fit inside mine?"), and system-of-systems models.
 - Spec gains an identity section: subject URI rules, claim-ID grammar (lowercase dotted
   segments), fragment addressing, and stability rule — renaming a claim ID is a breaking
   change to the contract, tracked like an API rename.
-- Evidence documents reference contracts by subject URI + contract digest (ties into
+- Assessments reference contracts by subject URI + contract digest (ties into
   ADR-0001/0004).
-- Gaming vector: subject identity confusion — evidence attached to a subject URI whose
+- Gaming vector: subject identity confusion — an assessment attached to a subject URI whose
   digest doesn't match the artifact actually observed. Verifiers must check digest agreement,
   not just URI equality.
 

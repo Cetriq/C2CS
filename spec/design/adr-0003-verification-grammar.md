@@ -13,7 +13,7 @@ making the standard's central verb vendor-specific. Three things need formal def
 1. **Scope expressions** — what a claim covers (hosts, paths, ports, processes).
 2. **Matching semantics** — when an observed event falls under a claim (host normalization,
    path canonicalization, DNS vs IP identity, symlinks).
-3. **Verdict semantics** — what "conformant" means over a set of evidence within a time
+3. **Verdict semantics** — what "conformant" means over a set of assessments within a time
    window, per `contract.mode`.
 
 ## Options
@@ -44,9 +44,9 @@ seccomp and AppArmor made. The spec must ship with:
 - A normalization appendix per category (lowercase hosts, resolved `..`/symlink policy,
   IP-vs-hostname matching rules).
 - The verdict table as normative text: `confirmed` / `unexercised` / `drift` / `violation`,
-  parameterized by `contract.mode`, evaluated over an explicit evidence window
-  (`evaluated_over: {from, to, evidence: [digests]}`) so a verdict is reproducible.
-- A conformance test suite: pairs of (contract, evidence) → expected verdicts. An
+  parameterized by `contract.mode`, evaluated over an explicit observation window
+  (`evaluated_over: {from, to, assessments: [digests]}`) so a verdict is reproducible.
+- A conformance test suite: pairs of (contract, assessments) → expected verdicts. An
   implementation is a verifier only if it passes the suite. This is what actually keeps
   implementations aligned — prose never does.
 
@@ -63,4 +63,4 @@ seccomp and AppArmor made. The spec must ship with:
 ## Deferred to PoC
 
 Whether the matcher set is sufficient for a real .NET service's contract, and what the
-practical evidence-window granularity is (per CI run, per deploy, rolling).
+practical observation-window granularity is (per CI run, per deploy, rolling).

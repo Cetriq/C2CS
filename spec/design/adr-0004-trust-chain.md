@@ -7,8 +7,8 @@
 
 The product pitch is "approved truth about the system", but in v0.1 `provenance.by:` is a
 string in a YAML file anyone can edit. Without integrity and authenticity, the trust claims
-collapse: a declared claim is only normative if you can prove who declared it, and evidence is
-only evidence if you can prove which harness produced it against which artifact. Building a
+collapse: a declared claim is only normative if you can prove who declared it, and an
+observation is only evidence if you can prove which harness produced it against which artifact. Building a
 bespoke signing scheme is both expensive and a credibility risk — security reviewers
 distrust homegrown crypto envelopes.
 
@@ -26,7 +26,7 @@ statements already define.
 ### Option C — C2CS documents as in-toto attestation predicates
 Define predicate types, e.g.:
 - `https://c2cs.dev/attestation/contract/v1`
-- `https://c2cs.dev/attestation/evidence/v1`
+- `https://c2cs.dev/attestation/assessment/v1`
 - `https://c2cs.dev/attestation/verdict/v1`
 
 An attestation's `subject` carries the artifact digests (matching `subject.artifacts` in the
@@ -40,7 +40,7 @@ next to SBOMs and SLSA provenance in registries that already handle them.
 positioning — *a semantic complement to the SBOM* — technically literal: C2CS attestations
 sit in the same store, signed the same way, verified by the same tooling as CycloneDX/SPDX
 attestations. The document model from ADR-0001 maps cleanly: contracts are signed by humans
-(or a release process on their behalf), evidence by the extractor/harness identity, verdicts
+(or a release process on their behalf), assessments by the extractor/harness identity, verdicts
 by the verifier.
 
 Plain unsigned YAML files remain valid *documents* (dev-loop ergonomics matter); conformance

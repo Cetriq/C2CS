@@ -5,7 +5,7 @@ of the system. Nothing here is stable yet; the point of v0.1 is to have somethin
 servable over MCP, and checkable in CI to argue about.*
 
 *The load-bearing design decisions for v0.2 are being worked as ADRs in
-[`design/`](design/README.md) — notably a contract/evidence document split (ADR-0001) and
+[`design/`](design/README.md) — notably a contract/assessment document split (ADR-0001) and
 three-valued Tier-1 completeness (ADR-0006) that will change the structure sketched here.*
 
 A C2CS model is a YAML document describing what a piece of software **does** — its operations,
