@@ -128,7 +128,7 @@ If you reference this work, please cite it via its DOI:
 > Törnquist, C. (2026). *C2CS: Code to Common Semantics.* Zenodo. https://doi.org/10.5281/zenodo.20780441
 
 The DOI above is the **concept DOI** — it always resolves to the latest version. To cite a
-specific version, use that version's DOI (e.g. v0.1.0: `10.5281/zenodo.20780442`). A
+specific version, use that version's DOI (e.g. v0.2.0: `10.5281/zenodo.21652846`). A
 [`CITATION.cff`](CITATION.cff) is included so GitHub shows a "Cite this repository" button.
 
 ## Discussion
