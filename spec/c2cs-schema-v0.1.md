@@ -68,7 +68,7 @@ core. For each behavior category:
 | Declared | Observed | Verdict |
 |----------|----------|---------|
 | yes      | yes      | **confirmed** |
-| yes      | no       | **unexercised** — not a violation; the behavior simply hasn't run |
+| yes      | no       | **not_observed** — not a violation; no observation exists in the window |
 | no       | yes      | **drift** — a violation under `closed` mode, an unknown under `open` |
 | forbidden| yes      | **violation** — always, regardless of mode |
 
