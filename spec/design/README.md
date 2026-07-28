@@ -23,7 +23,7 @@ and each ADR notes what it defers to it.
 | [0005](adr-0005-identity-and-composition.md) | Globally addressable subject identity, composition-ready references | Accepted |
 | [0006](adr-0006-extractor-conformance.md) | Three-valued semantics and extractor conformance classes | Accepted |
 | [0007](adr-0007-spec-governance.md) | Spec governance, versioning, and registry evolution | Accepted |
-| [0008](adr-0008-normative-scope.md) | Normative scope — standard versus reference implementation | Proposed |
+| [0008](adr-0008-normative-scope.md) | Normative scope — standard versus reference implementation | Accepted |
 
 ## Method
 
