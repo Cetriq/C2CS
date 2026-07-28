@@ -7,8 +7,10 @@
 .idea/
 .vscode/
 
-# Internal product discussion notes (not for publication)
+# Internal notes and drafts (not for publication)
 Produkt/diskussion.md
+artikeln.md
+C2CS-reframed-sections.md
 
 # LaTeX build artifacts (if the paper is later built from .tex)
 *.aux
