@@ -70,7 +70,7 @@ forbidden:
       date: 2026-07-28
 
 # ─────────────────────────────────────────────────────────────────────
-# Tier 2 — semantic annotations
+# Tier 2 — semantic concepts
 # Business meaning. Not mechanically verifiable; never treated as evidence.
 # ─────────────────────────────────────────────────────────────────────
 

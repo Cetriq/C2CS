@@ -34,7 +34,7 @@ are excluded from closed-mode verdicts — they cannot silently strengthen a con
 **Conformance classes:**
 - **C2CS Core** — emits all Tier-1 registry categories under the three-valued rule, with
   valid provenance, for at least one subject type.
-- **C2CS Semantic** — Core + Tier-2 annotations (operations, data entities) with
+- **C2CS Semantic** — Core + Tier-2 concepts (operations, data entities) with
   confidence on inferred claims.
 - **C2CS Attested** — Semantic + output delivered as signed attestations (ADR-0004).
 

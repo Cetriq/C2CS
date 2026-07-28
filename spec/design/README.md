@@ -17,7 +17,7 @@ and each ADR notes what it defers to it.
 | ADR | Title | Status |
 |-----|-------|--------|
 | [0001](adr-0001-document-model.md) | Split the model into contract and assessment documents | Accepted |
-| [0002](adr-0002-vocabulary-strategy.md) | Closed Tier-1 taxonomy, namespaced Tier-2 conventions | Proposed |
+| [0002](adr-0002-vocabulary-strategy.md) | Curated Tier-1 effect taxonomy, namespaced Tier-2 concepts | Accepted |
 | [0003](adr-0003-verification-grammar.md) | Typed matchers and formal verification semantics | Proposed |
 | [0004](adr-0004-trust-chain.md) | Define C2CS as an in-toto attestation predicate | Proposed |
 | [0005](adr-0005-identity-and-composition.md) | URI-based identity, composition-ready references | Proposed |

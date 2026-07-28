@@ -25,10 +25,10 @@ Worked example: [`examples/credit-service.c2cs.yaml`](examples/credit-service.c2
 
 2. **Two tiers, strictly separated.** The *verifiable core* (`capabilities`, `forbidden`)
    contains claims that can be mechanically compared against observed behavior. The *semantic
-   annotations* (`operations`, `data`) carry business meaning — what a capability is *for* —
+   concepts* (`operations`, `data`) carry business meaning — what a capability is *for* —
    and are not mechanically verifiable. An unverifiable claim must never borrow credibility
    from the verifiable tier; tools rendering a model must keep the distinction visible.
-   Annotations link *down* to the capabilities they use (`uses:`), never the reverse.
+   Concepts link *down* to the capabilities they use (`uses:`), never the reverse.
 
 3. **Contract mode.** `contract.mode: closed` asserts a closed world: any behavior not covered
    by a declared capability is a violation (least privilege). `open` means undeclared behavior
