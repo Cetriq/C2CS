@@ -7,6 +7,9 @@
 .idea/
 .vscode/
 
+# Internal product discussion notes (not for publication)
+Produkt/diskussion.md
+
 # LaTeX build artifacts (if the paper is later built from .tex)
 *.aux
 *.log

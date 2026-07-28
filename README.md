@@ -32,6 +32,9 @@ C2CS/
 │   ├── c2cs-whitepaper.md
 │   ├── references.bib
 │   └── figures/
+├── spec/
+│   ├── c2cs-schema-v0.1.md   # draft model format ("the IR")
+│   └── examples/
 ├── examples/
 └── experiments/
 ```
