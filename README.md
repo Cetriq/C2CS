@@ -33,9 +33,9 @@ C2CS/
 │   ├── references.bib
 │   └── figures/
 ├── spec/
-│   ├── c2cs-schema-v0.1.md   # draft model format ("the IR")
-│   ├── design/               # ADRs — load-bearing design decisions
-│   └── examples/
+│   ├── c2cs-schema-v0.2.md   # draft model format ("the IR") — contract/assessment/verdict
+│   ├── design/               # ADRs — load-bearing design decisions (0001–0008 accepted)
+│   └── examples/             # one document family: contract, assessments, verdict
 ├── examples/
 └── experiments/
 ```

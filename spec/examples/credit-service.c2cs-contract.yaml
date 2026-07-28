@@ -1,0 +1,70 @@
+# Contract — human-owned, lives in the repo, reviewed like code (ADR-0001).
+# Everything in this document is declared; it contains what SHALL hold.
+
+c2cs: "0.2"
+kind: contract
+registry: "0.1"
+
+subject:
+  logical: pkg:nuget/CreditService
+  version: "2.1.0"
+  artifacts:
+    - path: bin/CreditService.dll
+      digest: sha256:9b1f6c…
+  sbom: sbom/credit-service.cdx.json
+
+mode: closed          # least privilege: anything not declared here is forbidden
+
+# ── Tier 1 — capabilities ────────────────────────────────────────────
+capabilities:
+  network:
+    - id: cap.net.db
+      direction: outbound
+      host: db.internal.acme.example
+      port: 5432
+      by: claes@acme.example
+      date: 2026-07-28
+
+    - id: cap.net.audit
+      direction: outbound
+      host: audit.internal.acme.example
+      port: 443
+      by: claes@acme.example
+      date: 2026-07-28
+      promoted_from: "sha256:bb22…#inf.net.audit"   # lifted from an inferred assessment
+
+  filesystem:
+    - id: cap.fs.applog
+      path: /var/log/credit-service/
+      access: write
+      by: claes@acme.example
+      date: 2026-07-28
+
+  process: []           # explicit for review clarity; under closed mode,
+                        # omission would mean the same
+
+forbidden:
+  - id: forb.net.external
+    category: network
+    match: {direction: outbound, host: any, except: ["*.internal.acme.example"]}
+    rationale: Customer data must not leave the internal zone.
+    by: claes@acme.example
+    date: 2026-07-28
+
+# ── Tier 2 — semantic concepts ───────────────────────────────────────
+concepts:
+  operations:
+    - id: op.customer.credit.evaluate
+      summary: Evaluates a customer's creditworthiness and records the decision.
+      reads: [Customer, CreditHistory]
+      writes: [CreditDecision]
+      uses: [cap.net.db, cap.net.audit, cap.fs.applog]
+      by: claes@acme.example
+      date: 2026-07-28
+      promoted_from: "sha256:bb22…#inf.op.evaluate"
+  data:
+    entities:
+      - name: Customer
+        classification: c2cs.data.personal
+        by: claes@acme.example
+        date: 2026-07-28

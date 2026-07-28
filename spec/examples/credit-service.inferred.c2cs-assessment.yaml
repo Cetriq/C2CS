@@ -1,0 +1,70 @@
+# Inferred assessment — one producer, one pinned pipeline, kind: inferred (ADR-0001).
+# Hypotheses with confidence. Informs review and promotion; never participates in verdicts.
+
+c2cs: "0.2"
+kind: assessment
+registry: "0.1"
+
+assessment:
+  kind: inferred
+
+producer:
+  tool: c2cs-dotnet/1.2.0
+  model: claude-fable-5
+  registry: "0.1"
+  schema: "0.2"
+
+contract:
+  subject: pkg:nuget/CreditService@2.1.0
+  digest: sha256:c0ffee…
+
+subject:
+  logical: pkg:nuget/CreditService
+  version: "2.1.0"
+  artifacts:
+    - path: bin/CreditService.dll
+      digest: sha256:9b1f6c…
+
+# Three-valued semantics (ADR-0006): every registry category appears with explicit status.
+capabilities:
+  network:
+    status: analyzed
+    claims:
+      - id: inf.net.db
+        direction: outbound
+        host: db.internal.acme.example
+        port: 5432
+        confidence: 0.92
+        source: src/Infrastructure/CreditDb.cs#L41
+      - id: inf.net.audit
+        direction: outbound
+        host: audit.internal.acme.example
+        port: 443
+        confidence: 0.84
+        source: src/Auditing/AuditClient.cs#L17
+
+  filesystem:
+    status: analyzed
+    claims:
+      - id: inf.fs.applog
+        path: /var/log/credit-service/
+        access: write
+        confidence: 0.95
+        source: src/Program.cs#L28
+
+  process:
+    status: analyzed
+    claims: []            # known empty: analyzed, no subprocess behavior found
+
+  environment:
+    status: not-analyzed  # unknown: reflection-heavy config loading defeated static
+                          # analysis — carries no information about the world
+
+concepts:
+  operations:
+    - id: inf.op.evaluate
+      summary: Evaluates a customer's creditworthiness and records the decision.
+      reads: [Customer, CreditHistory]
+      writes: [CreditDecision]
+      uses: [inf.net.db, inf.net.audit, inf.fs.applog]
+      confidence: 0.86

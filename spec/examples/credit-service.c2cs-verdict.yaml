@@ -1,0 +1,63 @@
+# Verdict — produced by a verification engine from one contract revision plus a set of
+# assessments over an explicit window (ADR-0003). Reproducible: same inputs, same verdicts.
+
+c2cs: "0.2"
+kind: verdict
+registry: "0.1"
+
+producer:
+  tool: c2cs-verify/0.1.0
+  registry: "0.1"
+  schema: "0.2"
+
+contract:
+  subject: pkg:nuget/CreditService@2.1.0
+  digest: sha256:c0ffee…
+  mode: closed
+
+evaluated_over:
+  from: 2026-07-26T00:00Z
+  to: 2026-07-28T12:00Z
+  assessments:
+    - {digest: "sha256:aa11…", kind: observed}
+    # inferred assessments never participate in verdicts (ADR-0003)
+
+results:
+  claims:
+    - claim: cap.net.db
+      verdict: confirmed
+      matched: ["sha256:aa11…#obs.net.1"]
+      specificity: exact
+    - claim: cap.net.audit
+      verdict: not_observed        # an absence of observation, nothing more
+      specificity: exact
+    - claim: cap.fs.applog
+      verdict: confirmed
+      matched: ["sha256:aa11…#obs.fs.1"]
+      specificity: prefix
+    - category: process            # category-level entry: the contract's explicit empty
+      verdict: confirmed           # set has no claim ID — the category itself is the claim
+      matched: []
+
+  forbidden:
+    - claim: forb.net.external
+      verdict: violation
+      matched: ["sha256:aa11…#obs.net.9"]
+
+  drift:
+    - observed: "sha256:aa11…#obs.net.9"
+      category: network
+      note: outbound to telemetry.vendor.example:443 covered by no declared claim;
+        also triggers forb.net.external and is reported under both headings
+
+overall:
+  outcome: not-conformant
+  # derivation: violation + drift under closed mode -> not-conformant.
+  # had there been no violation/drift, environment: unknown would still have
+  # capped the outcome at undetermined (unknown prevents a positive
+  # closed-mode verdict, ADR-0006).
+  coverage:
+    network: analyzed
+    filesystem: analyzed
+    process: analyzed
+    environment: unknown

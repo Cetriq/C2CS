@@ -1,0 +1,62 @@
+# Observed assessment — runtime observations from the harness, kind: observed (ADR-0001).
+# Reports what was seen; matching against the contract is the verification engine's job.
+
+c2cs: "0.2"
+kind: assessment
+registry: "0.1"
+
+assessment:
+  kind: observed
+  window: {from: "2026-07-26T00:00Z", to: "2026-07-28T12:00Z"}
+
+producer:
+  tool: c2cs-mcp-harness/0.3.0
+  registry: "0.1"
+  schema: "0.2"
+
+contract:
+  subject: pkg:nuget/CreditService@2.1.0
+  digest: sha256:c0ffee…
+
+subject:
+  logical: pkg:nuget/CreditService
+  version: "2.1.0"
+  artifacts:
+    - path: bin/CreditService.dll
+      digest: sha256:9b1f6c…
+
+capabilities:
+  network:
+    status: analyzed
+    claims:
+      - id: obs.net.1
+        direction: outbound
+        host: db.internal.acme.example
+        port: 5432
+        evidence: c2cs-trace://run-47/net#1042
+        first_seen: 2026-07-26T09:12Z
+        last_seen: 2026-07-28T11:58Z
+      - id: obs.net.9
+        direction: outbound
+        host: telemetry.vendor.example      # not declared anywhere — the verifier
+        port: 443                           # will flag this, not the harness
+        evidence: c2cs-trace://run-47/net#3377
+        first_seen: 2026-07-27T02:41Z
+        last_seen: 2026-07-27T02:41Z
+
+  filesystem:
+    status: analyzed
+    claims:
+      - id: obs.fs.1
+        path: /var/log/credit-service/
+        access: write
+        evidence: c2cs-trace://run-47/fs#0210
+        first_seen: 2026-07-26T09:12Z
+        last_seen: 2026-07-28T11:59Z
+
+  process:
+    status: analyzed
+    claims: []            # known empty: exec events monitored, none occurred
+
+  environment:
+    status: not-analyzed  # unknown: harness ran without env instrumentation this window

@@ -1,18 +1,15 @@
-# C2CS Schema v0.1 — draft for discussion
+# C2CS Schema v0.1 — superseded
 
-*Status: working draft. This is the first concrete sketch of the C2CS model format — the "IR"
-of the system. Nothing here is stable yet; the point of v0.1 is to have something extractable,
-servable over MCP, and checkable in CI to argue about.*
-
-*The load-bearing design decisions for v0.2 are being worked as ADRs in
-[`design/`](design/README.md) — notably a contract/assessment document split (ADR-0001) and
-three-valued Tier-1 completeness (ADR-0006) that will change the structure sketched here.*
+*Status: **superseded by [v0.2](c2cs-schema-v0.2.md)** (2026-07-28), which implements the
+accepted design decisions ADR-0001 … ADR-0008. Retained for history; do not implement
+against this version. Notable differences: v0.2 splits the single document into contract /
+assessment / verdict, replaces per-claim provenance with document kinds plus producer
+pinning, makes Tier-1 categories three-valued, and renames the verdict `unexercised` to
+`not_observed`.*
 
 A C2CS model is a YAML document describing what a piece of software **does** — its operations,
 data, resources, and effects — as a set of *claims*, each carrying provenance. It complements
 the SBOM, which describes what software *consists of*.
-
-Worked example: [`examples/credit-service.c2cs.yaml`](examples/credit-service.c2cs.yaml).
 
 ## Design principles
 
