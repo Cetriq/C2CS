@@ -284,9 +284,12 @@ dense representation. Unchanged from v0.1.
 
 ## Open questions toward v0.3
 
-- The registry draft itself: category set, matcher grammars, normalization appendices,
-  observation mappings (ADR-0002/0003) — the largest single work item.
-- The `forbidden` matcher grammar (`except:` above is illustrative, not yet normative).
+- The registry draft now exists at [`registry/`](registry/README.md) (version 0.1, draft):
+  four effect categories with matcher grammars, normalization rules, and observation
+  mappings, plus the relation and concept vocabularies. It remains draft until conformance
+  fixtures exercise each entry (ADR-0003).
+- The `except:` matcher form is now defined per category in the registry; fixtures are
+  what will make it normative.
 - JSON Schema files for the three document kinds + the first conformance fixtures.
 - Whether mechanically derived static findings deserve a third assessment kind admissible
   in verdicts (deferred from ADR-0003).
