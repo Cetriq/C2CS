@@ -1,15 +1,40 @@
 # ADR-0011: Confidence semantics
 
-**Status:** Proposed
+**Status:** Accepted (2026-07-28)
 **Date:** 2026-07-28
 
-## Principle
+> Accepted with amendments from review: the definition unified across tiers (one rule,
+> different authoritative reviewers — removing the Tier-1/Tier-2 asymmetry the proposed
+> rule 5 introduced), the producer-property principle added, *producer pipeline* aligned to
+> *producer identity + version* (ADR-0001), the can-be-wrong argument lifted into the
+> principle section, and a concrete calibration example added.
 
-**Confidence is a forecast of verification.**
+## Principles
 
-`confidence: 0.82` on an inferred claim means: *the producer estimates a 0.82 probability
-that this claim, evaluated against sufficient observation, would be confirmed.* Confidence
-is a prediction about a future verdict — which makes it measurable, because verdicts exist.
+**Confidence is a forecast of survival under authoritative review.**
+
+`confidence: 0.82` always means: *the producer estimates a 0.82 probability that this
+assertion will survive its next authoritative review.* What differs between tiers is only
+who the authoritative reviewer is:
+
+- **Claims (Tier 1):** the verification engine — survival means `confirmed` against
+  sufficient observation.
+- **Concepts (Tier 2):** the human reviewer — survival means acceptance at promotion.
+
+One definition, two reviewers. This makes confidence a prediction about a future,
+observable event — and therefore the only kind of number that can be *wrong*, which is
+precisely why it can be trusted.
+
+Concretely: take a producer's 100 claims stated at `confidence: 0.8`. If the producer is
+well calibrated, verification will confirm ≈80 of them and find drift/violation or
+`not_observed`-forever in ≈20. Note what this is *not*: 0.82 is not "82% probability the
+claim is true" in the abstract — it is 82% that the authoritative review, when it comes,
+confirms it.
+
+**Confidence is a property of the producer, not of the claim.** The same claim body
+(ADR-0009's semantic-identity invariant) may carry 0.82 from extractor A and 0.64 from
+extractor B — one claim, two producers, two forecasts. Confidence lives in attribution,
+never in meaning.
 
 ## Context
 
@@ -42,8 +67,9 @@ Adopt the principle above and attach its consequences:
   producer's claims stated at ~0.8, about 80% should end up confirmed. Standard proper
   scoring (e.g. Brier) applies. The spec defines the *meaning*; it does not require any
   calibration *quality* for conformance — but it makes quality measurable and comparable.
-- **Scoped.** Confidences are comparable within one pinned producer pipeline (ADR-0001).
-  Cross-producer comparison is meaningful only alongside published calibration evidence.
+- **Scoped.** Confidences are comparable within one producer identity + version (the
+  pinned producer block of ADR-0001). Cross-producer comparison is meaningful only
+  alongside published calibration evidence.
 
 **Rules:**
 1. Confidence appears only on inferred content (claims and concepts). Observed claims have
@@ -54,14 +80,14 @@ Adopt the principle above and attach its consequences:
    `confidence: 0`, and low confidence is not `unknown`. A claim at 0.3 is a hypothesis
    held weakly; `not-analyzed` is no hypothesis at all.
 4. Promotion thresholds ("auto-suggest at ≥0.9") are consumer policy, never spec.
-5. For Tier-2 concepts, which have no truth conditions (ADR-0009), confidence means the
-   producer's estimated probability that a knowledgeable human reviewer would accept the
-   concept as stated — the promotion decision is the closest observable event.
+5. For Tier-2 concepts, which have no truth conditions (ADR-0009), the authoritative
+   reviewer is human and the observable event is the promotion decision — the same
+   definition as for claims, with a different reviewer (see Principles). No separate
+   Tier-2 semantics exists.
 
 ## Recommendation
 
-**Option C.** It is the only option where the number can be *wrong* — and therefore the
-only one where it can be trusted. It composes cleanly with the existing architecture:
+**Option C.** It composes cleanly with the existing architecture:
 verdicts (ADR-0003) become the feedback signal, producer pinning (ADR-0001) defines the
 comparison scope, and the epistemics stay honest (best-effort inference, now with a
 falsifiable accuracy claim — the whitepaper's "calibrated uncertainty" made concrete).
