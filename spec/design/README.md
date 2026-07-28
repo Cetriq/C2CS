@@ -26,6 +26,16 @@ and each ADR notes what it defers to it.
 | [0008](adr-0008-normative-scope.md) | Normative scope — standard versus reference implementation | Accepted |
 | [0009](adr-0009-claim-model.md) | The Claim Model — the atom of the standard | Proposed |
 | [0010](adr-0010-semantic-stability.md) | Semantic stability | Proposed |
+| [0011](adr-0011-confidence-semantics.md) | Confidence semantics — confidence as a forecast of verification | Proposed |
+| [0012](adr-0012-assessment-aggregation.md) | Assessment aggregation and conflict resolution | Proposed |
+| [0013](adr-0013-semantic-relations.md) | Semantic relations — vocabulary, not logic | Proposed |
+
+Two non-ADRs, recorded so they are decisions rather than omissions: **implementations never
+get ADRs** — MCP, specific AI models, and IDE integrations are informative-layer choices
+(ADR-0008) and belong in tool documentation; and **composition/capability inheritance has no
+ADR yet** — ADR-0005 reserves the door (`attributed-to:`), and writing the aggregation
+semantics before the PoC and registry exist would decide it at its least-informed moment
+(the ADR-0007 argument against premature structure).
 
 ## Method
 
