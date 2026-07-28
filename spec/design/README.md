@@ -35,7 +35,7 @@ and combined.
 | [0001](adr-0001-document-model.md) | Split the model into contract and assessment documents | Accepted |
 | [0005](adr-0005-identity-and-composition.md) | Globally addressable subject identity, composition-ready references | Accepted |
 | [0009](adr-0009-claim-model.md) | The Claim Model — the atom of the standard | Accepted |
-| [0013](adr-0013-semantic-relations.md) | Semantic relations — vocabulary, not logic | Proposed |
+| [0013](adr-0013-semantic-relations.md) | Semantic relations — vocabulary, not logic | Accepted |
 
 ### Verification & knowledge
 

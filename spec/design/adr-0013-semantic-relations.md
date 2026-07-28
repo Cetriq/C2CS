@@ -1,7 +1,14 @@
 # ADR-0013: Semantic relations
 
-**Status:** Proposed
+**Status:** Accepted (2026-07-28)
 **Date:** 2026-07-28
+
+> Accepted with amendments from review: the identifier/instance distinction made explicit
+> (relation identifiers have meaning but no truth conditions; relation instances inherit
+> the epistemic status of their document), the node-semantics invariant added (relations
+> never alter what their endpoints mean), *endpoint types* renamed **domain and range**
+> (established graph terminology, no RDF import), and the algorithm boundary stated: the
+> standard defines relation identity, not graph algorithms.
 
 ## Principle
 
@@ -10,7 +17,20 @@
 C2CS expresses *that* `Customer` owns `Invoice`; it does not ship an inference engine that
 derives what follows from ownership. Relations are descriptive, namespaced edges between
 identities — governed exactly like every other semantic identifier — and any reasoning over
-them lives in the informative layer (ADR-0008).
+them lives in the informative layer (ADR-0008). **The standard defines relation identity,
+not graph algorithms**: it delivers the graph; how a consumer traverses, queries, or reasons
+over it is the consumer's business. That division of labor is the AI story — an agent asked
+"which operations indirectly touch customer data?" reasons over a graph the standard
+guarantees is commonly typed, without the standard ever answering the question itself.
+
+**Identifier versus instance.** A relation *identifier* (`c2cs.rel.owns`) is a Tier-2
+semantic identifier: it has meaning, no truth conditions (ADR-0009). A relation *instance*
+(`Customer ─owns→ Invoice`) is an assertion in a document, and **inherits the epistemic
+status of the document that contains it**: declared in a contract, hypothesis-with-
+confidence in an inferred assessment (ADR-0011). Instances remain Tier 2 — they never
+participate in verdicts — but the distinction is load-bearing for any future discussion of
+relation provenance or evidence: the vocabulary cannot be true or false; an edge in a
+document can be right or wrong.
 
 ## Context
 
@@ -43,17 +63,23 @@ Relations become Tier-2 identifiers under the existing vocabulary regime:
 - **Vocabulary.** A central relation namespace (`c2cs.rel.*`) seeded deliberately small —
   single digits: `uses`, `reads`, `writes`, `owns`, `triggers`, `derives-from`,
   `processes`. Vendor namespaces (`acme.rel.*`) extend freely and can be promoted
-  (ADR-0002). Every relation entry defines its meaning, its subject/object types (concept,
-  claim, entity, operation), and its direction — and is frozen on admission (ADR-0010).
+  (ADR-0002). Every relation entry defines its meaning, its **domain and range** (which
+  node types it may connect: concept, claim, entity, operation), and its direction — and is
+  frozen on admission (ADR-0010).
 - **Form.** A relation instance is a typed triple over identities:
   `{from: Customer, rel: c2cs.rel.owns, to: Invoice}` — addressable identities on both
   ends (ADR-0005), a registry identifier in the middle.
 - **No mandated entailment.** The standard defines no transitivity, no inheritance, no
   inference obligations. A relation entry MAY note logical properties informatively
   (e.g. "typically transitive"), but no conforming tool is required to derive anything.
-- **Relations are Tier 2.** They have meaning, not truth conditions (ADR-0009): relations
-  never participate in verdicts, may carry confidence when inferred (ADR-0011 rule 5), and
-  follow the concept promotion path.
+- **Relations are Tier 2.** Identifiers have meaning, not truth conditions (ADR-0009);
+  instances inherit their document's epistemic status (see Principle). Relations never
+  participate in verdicts, may carry confidence when inferred (ADR-0011 rule 5), and follow
+  the concept promotion path.
+- **Invariant: relations do not alter the semantics of the connected nodes.** An edge is
+  only a connection — `Customer ─owns→ Invoice` changes what neither `Customer` nor
+  `Invoice` means. This is ADR-0009's sole-source rule seen from the graph: node semantics
+  come from the registry, never from topology.
 
 The existing shorthands remain: `uses:`, `reads:`, `writes:` are defined as syntactic sugar
 for their `c2cs.rel.*` triples, so v0.2 documents stay valid (additive, ADR-0007) while the
