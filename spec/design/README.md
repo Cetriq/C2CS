@@ -45,7 +45,7 @@ and combined.
 | [0004](adr-0004-trust-chain.md) | Define C2CS as an in-toto attestation predicate | Accepted |
 | [0006](adr-0006-extractor-conformance.md) | Three-valued semantics and extractor conformance classes | Accepted |
 | [0011](adr-0011-confidence-semantics.md) | Confidence semantics — a forecast of survival under authoritative review | Accepted |
-| [0012](adr-0012-assessment-aggregation.md) | Assessment aggregation and conflict resolution | Proposed |
+| [0012](adr-0012-assessment-aggregation.md) | Assessment aggregation and conflict resolution | Accepted |
 
 Two non-ADRs, recorded so they are decisions rather than omissions: **implementations never
 get ADRs** — MCP, specific AI models, and IDE integrations are informative-layer choices

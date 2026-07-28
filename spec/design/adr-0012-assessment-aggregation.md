@@ -1,16 +1,32 @@
 # ADR-0012: Assessment aggregation and conflict resolution
 
-**Status:** Proposed
+**Status:** Accepted (2026-07-28)
 **Date:** 2026-07-28
+
+> Accepted with amendments from review: the algebraic properties made explicit (aggregation
+> is associative, commutative, idempotent, and order-independent), the existential premise
+> made precise and turned into a registry admission requirement instead of an assumption
+> (review's point: "process exited with code 0" vs "code 1" about the same process and
+> moment *would* conflict — so the standard must guarantee observations stay existential),
+> and the I-saw-nothing sentence lifted into the principle. *Knowledge-maximal* was
+> questioned and kept — it pairs with ADR-0006.
 
 ## Principle
 
-**Observations accumulate; ignorance never overrides knowledge.**
+**Existential observations accumulate; ignorance never overrides knowledge.**
 
-An observation is an existential statement — *this event was seen*. Existential statements
-cannot contradict each other, so at the observed level there are no conflicts to resolve:
-what looks like a conflict is always a difference in *coverage*, and ADR-0006's knowledge
-states already have the vocabulary for that.
+An observation in C2CS is an existential statement — *this event was seen*. Existential
+statements cannot contradict each other, so at the observed level there are no conflicts to
+resolve: what looks like a conflict is always a difference in *coverage*, and ADR-0006's
+knowledge states already have the vocabulary for that. One producer's `[]` means *"I saw
+nothing"* — never *"nothing happened"* — which is this entire ADR in one sentence.
+
+The existential premise is guaranteed, not assumed: **a registry category's observation
+mapping MUST yield existential statements** (events seen, resources touched). A future
+category whose natural observations are non-existential (states, exit codes, measurements —
+where two reports about the same subject and moment *can* contradict) cannot be admitted
+under this aggregation model; it would require its own aggregation semantics through a new
+ADR. The loophole is closed at the registry gate (ADR-0002), not by hoping.
 
 ## Context
 
@@ -53,6 +69,15 @@ A sighting in any assessment is a sighting.
 
 These three rules are the principle restated: positive knowledge accumulates monotonically,
 absence-of-sighting is weak, absence-of-analysis is nothing.
+
+**Algebraic contract.** Aggregation is **associative, commutative, and idempotent** —
+`(A ⊕ B) ⊕ C = A ⊕ (B ⊕ C)`, `A ⊕ B = B ⊕ A`, `A ⊕ A = A` — and therefore
+**aggregation MUST be independent of assessment ordering**. Union of observations and
+knowledge-maximal coverage both have these properties by construction (they are semilattice
+joins); the point of writing them out is that they are *normative*: any aggregation
+extension that would break them (weights, ordering effects, last-writer-wins) is excluded
+in advance, and implementers get a mathematical contract the conformance fixtures can
+exercise directly (permuted and duplicated assessment sets MUST yield identical verdicts).
 
 **Inferred assessments: never aggregated.** They do not participate in verdicts (ADR-0003),
 and the spec defines no ensemble math over confidences (ADR-0011 scopes confidence to one
