@@ -24,6 +24,8 @@ and each ADR notes what it defers to it.
 | [0006](adr-0006-extractor-conformance.md) | Three-valued semantics and extractor conformance classes | Accepted |
 | [0007](adr-0007-spec-governance.md) | Spec governance, versioning, and registry evolution | Accepted |
 | [0008](adr-0008-normative-scope.md) | Normative scope — standard versus reference implementation | Accepted |
+| [0009](adr-0009-claim-model.md) | The Claim Model — the atom of the standard | Proposed |
+| [0010](adr-0010-semantic-stability.md) | Semantic stability | Proposed |
 
 ## Method
 
