@@ -2,23 +2,29 @@ cff-version: 1.2.0
 message: "If you use this work, please cite it using the metadata below."
 title: "C2CS: Code to Common Semantics"
 abstract: >-
-  C2CS explores whether Large Language Models can infer high-level program
-  semantics well enough to improve security decisions and least-privilege
-  policy generation. The core pipeline is Code → semantic inference → policy
-  proposal, deriving policy from inferred high-level intent rather than from
-  observed low-level behavior.
+  C2CS is an open, in-progress standard for describing what software does —
+  its operations, data, resources, and effects — as machine-readable semantic
+  documents (contracts, assessments, verdicts) whose declared behavior can be
+  checked against observed behavior. It is designed as a semantic complement
+  to the SBOM. The research core explores whether Large Language Models can
+  infer high-level program semantics well enough to improve security
+  decisions and least-privilege policy generation, deriving policy from
+  inferred high-level intent rather than from observed low-level behavior.
 type: software
 authors:
   - family-names: "Törnquist"
     given-names: "Claes"
 doi: 10.5281/zenodo.20780441
-version: "0.1.0"
-date-released: "2026-06-21"
+version: "0.2.0"
+date-released: "2026-07-28"
 license: CC-BY-4.0
 url: "https://github.com/Cetriq/C2CS"
 keywords:
   - large language models
   - program semantics
+  - semantic contracts
+  - software verification
+  - software supply chain
   - least-privilege policy
   - software security
   - policy generation
