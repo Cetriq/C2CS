@@ -22,3 +22,7 @@ C2CS-reframed-sections.md
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+# Python
+__pycache__/
+*.pyc
