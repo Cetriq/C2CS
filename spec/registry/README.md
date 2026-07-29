@@ -19,7 +19,7 @@ exist yet. Until then, registry 0.1 is a draft for review, not a released vocabu
 | Section | Entries |
 |---------|---------|
 | [`effects/`](effects/) — Tier-1 categories | `network`, `filesystem`, `process`, `environment` (active) · [`candidates`](effects/candidates.md): `persistent-storage`, `ipc` (not admitted) |
-| [`relations.md`](relations.md) — relation vocabulary | `c2cs.rel.uses`, `reads`, `writes`, `owns`, `triggers`, `derives-from`, `processes` |
+| [`relations.md`](relations.md) — relation vocabulary | `c2cs.rel.uses`, `reads`, `writes`, `triggers`, `derives-from`, `processes` · not seeded: `owns` |
 | [`concepts.md`](concepts.md) — Common Concepts | `c2cs.data.*` seed classifications |
 
 ## Entry formats
@@ -82,5 +82,7 @@ The registry carries its own version (documents pin it via the top-level `regist
 field). Additions are minor releases; deprecations are minor releases; nothing is ever
 removed. This changelog is the release record:
 
-- **0.1 (draft, 2026-07-28)** — initial seed: four effect categories, seven relations,
-  two data classifications. Two candidate categories documented as not admitted.
+- **0.1 (draft, 2026-07-28)** — initial seed: four effect categories, six relations,
+  two data classifications. Documented as considered and not admitted: two candidate
+  categories (`persistent-storage`, `ipc`), one relation (`owns`), three data
+  classifications (`secret`, `identity`, `configuration`).
