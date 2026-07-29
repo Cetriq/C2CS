@@ -1,8 +1,9 @@
-# Walkthrough 05 — stress test: a Kubernetes operator
+# Walkthrough 05 — boundary test: a Kubernetes operator
 
-**This walkthrough is allowed to fail.** Its purpose is to find where the model bends or
-breaks — the walkthrough counterpart of `registry/effects/candidates.md`. The subject is
-deliberately something C2CS was not designed around.
+**This is a boundary test, and it is allowed to fail.** Its purpose is not to stress the
+model but to map its *validity domain* — where the abstractions hold, where they thin
+out, and why. It is the walkthrough counterpart of `registry/effects/candidates.md`. The
+subject is deliberately something C2CS was not designed around.
 
 **Subject:** `cert-rotation-operator`, an in-cluster operator that watches Secrets across
 namespaces, rotates expiring TLS certificates, writes the new certificates back, and
@@ -77,6 +78,15 @@ and "read one object" equally). For such subjects, C2CS today offers verifiable
 *transport* claims plus unverifiable *semantic* description — useful, but far short of
 the credit-service story.
 
+Stated as the property it is rather than the failure it looks like: **C2CS does not
+describe what a system does — it describes what is observable at the chosen effect
+boundary.** Today that boundary is the OS (syscalls, connections, spawns). Kubernetes
+moved this subject's effective boundary to the API server and its audit log, and nearly
+all the semantics moved with it. The model behaved exactly as defined; what this test
+maps is how much of a given subject's meaning lives *at* the boundary the registry
+currently observes. That relativity was implicit in the registry's observation mappings
+all along — this walkthrough makes it explicit.
+
 ## The direction this points (not solved here)
 
 The fix is **not** to stretch the existing categories. It is a possible new *class* of
@@ -96,6 +106,16 @@ resolve before any such admission:
 
 This goes through `candidates.md` and the admission process like everything else — after
 the PoC, with real usage, per the growth-restraint position.
+
+**Warning flag, raised in review and adopted as standing guidance:** the platform list
+does not end at Kubernetes — AWS, Azure, GCP, Salesforce, SAP all qualify as "effect
+boundaries" by the same argument, and admitting them casually would explode Tier 1 into a
+catalog of platforms, dissolving exactly the small technology-independent core that makes
+the current four categories implementable everywhere. If platform-boundary categories
+ever come, they come one at a time, against the full admission bar (existential
+observation mapping included), with demonstrated need from real contracts — this
+walkthrough shows why such a category *may* be needed, and equally why it must *earn*
+its place through the same process as everything else in C2CS.
 
 ## Findings (continuing the numbering)
 

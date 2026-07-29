@@ -12,7 +12,7 @@ which fields the consumer touches, and reports friction and gaps as findings.
 | [02](02-verify-in-ci.md) | `c2cs verify` in CI | "Does the implementation conform to the declared contract?" |
 | [03](03-grc-report.md) | GRC / compliance | "What data is processed, what is forbidden, who approved it — and is it holding?" |
 | [04](04-architecture-view.md) | Architecture view | "Show me the system: operations, data, effect surface." |
-| [05](05-stress-kubernetes-operator.md) | Stress test (allowed to fail) | "Describe a Kubernetes operator — and find the model's boundary." |
+| [05](05-boundary-kubernetes-operator.md) | Boundary test (allowed to fail) | "Describe a Kubernetes operator — and map the model's validity domain." |
 
 ## Findings summary
 
@@ -40,7 +40,7 @@ least one consumer (including the promotion reviewer of F1). The closest to unus
 because verdicts should be readable without dereferencing (ADR-0003's reproducibility
 intent), but worth rechecking when fixtures exist.
 
-**F5 — semantic tunneling (from the stress test).** Subjects whose effect surface
+**F5 — semantic tunneling (from the boundary test).** Subjects whose effect surface
 tunnels through a platform API (Kubernetes operators, cloud-API-only workloads) get a
 near-empty verifiable core: at the OS boundary, a certificate rotator and a
 cluster-destroyer are indistinguishable. The model's honest current boundary — stated,
@@ -92,6 +92,6 @@ become executable.
 
 - **A second example family in a different domain** (a CLI tool or a background job
   worker), so the consumer walkthroughs stop being calibrated to one service shape.
-- **Further stress walkthroughs** in the 05 pattern: PostgreSQL itself (a general-purpose
+- **Further boundary tests** in the 05 pattern: PostgreSQL itself (a general-purpose
   engine whose semantics are parameterized by its input — likely a different failure
   mode than tunneling) and a batch/ETL processor (dynamic, data-determined scopes).

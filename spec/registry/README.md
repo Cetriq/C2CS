@@ -79,7 +79,11 @@ stable until real extractors and harnesses have exercised them. Pressure for new
 categories (`messaging`, `cache`, `secrets`, …) goes through
 [`effects/candidates.md`](effects/candidates.md) first, against the admission bar — the
 current strength of Tier 1 is that four categories feel motivated, consistent, and small
-enough to implement on any platform, and that is worth defending.
+enough to implement on any platform, and that is worth defending. This applies with extra
+force to **platform-boundary categories** (`kubernetes-api`, cloud-provider APIs — see
+walkthrough 05): by the same argument every platform qualifies, and casual admission
+would turn Tier 1 into a catalog of platforms; they come one at a time, with demonstrated
+need, or not at all.
 
 **Relations** (in [`relations.md`](relations.md)) add **domain**, **range**, and
 **direction** (ADR-0013).
