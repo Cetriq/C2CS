@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://c2cs.dev/schema/0.2/contract",
+  "title": "C2CS 0.2 — contract document",
+  "type": "object",
+  "properties": {
+    "c2cs": { "$ref": "common#/$defs/schemaVersion" },
+    "kind": { "const": "contract" },
+    "registry": { "$ref": "common#/$defs/registryVersion" },
+    "subject": { "$ref": "common#/$defs/subject" },
+    "mode": { "enum": ["closed", "open"] },
+    "capabilities": {
+      "type": "object",
+      "propertyNames": { "$ref": "common#/$defs/categoryName" },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/contractClaim" }
+      }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/prohibition" }
+    },
+    "concepts": {
+      "type": "object",
+      "properties": {
+        "operations": { "type": "array", "items": { "$ref": "#/$defs/operation" } },
+        "data": {
+          "type": "object",
+          "properties": {
+            "entities": { "type": "array", "items": { "$ref": "#/$defs/entity" } }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["c2cs", "kind", "registry", "subject", "mode", "capabilities"],
+  "additionalProperties": false,
+  "$defs": {
+    "contractClaim": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common#/$defs/claimId" },
+        "by": { "type": "string", "minLength": 1 },
+        "date": { "$ref": "common#/$defs/date" },
+        "rationale": { "type": "string", "minLength": 1 },
+        "promoted_from": { "$ref": "common#/$defs/claimRef" }
+      },
+      "required": ["id", "by", "date"],
+      "$comment": "Additional properties are the claim body's matcher attributes; their vocabulary and grammar are defined by the claim's registry category and validated at the registry level, beyond JSON Schema.",
+      "allOf": [{ "$ref": "common#/$defs/noAssessmentQualifiers" }]
+    },
+    "prohibition": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common#/$defs/claimId" },
+        "category": { "$ref": "common#/$defs/categoryName" },
+        "match": { "type": "object" },
+        "rationale": { "type": "string", "minLength": 1 },
+        "by": { "type": "string", "minLength": 1 },
+        "date": { "$ref": "common#/$defs/date" }
+      },
+      "required": ["id", "category", "match", "by", "date"],
+      "additionalProperties": false
+    },
+    "operation": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common#/$defs/claimId" },
+        "summary": { "type": "string", "minLength": 1 },
+        "reads": { "type": "array", "items": { "$ref": "common#/$defs/entityName" } },
+        "writes": { "type": "array", "items": { "$ref": "common#/$defs/entityName" } },
+        "uses": { "type": "array", "items": { "$ref": "common#/$defs/claimId" } },
+        "rationale": { "type": "string", "minLength": 1 },
+        "by": { "type": "string", "minLength": 1 },
+        "date": { "$ref": "common#/$defs/date" },
+        "promoted_from": { "$ref": "common#/$defs/claimRef" }
+      },
+      "required": ["id", "summary", "by", "date"],
+      "additionalProperties": false
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "name": { "$ref": "common#/$defs/entityName" },
+        "classification": { "$ref": "common#/$defs/namespacedIdentifier" },
+        "by": { "type": "string", "minLength": 1 },
+        "date": { "$ref": "common#/$defs/date" }
+      },
+      "required": ["name", "classification"],
+      "additionalProperties": false
+    }
+  }
+}

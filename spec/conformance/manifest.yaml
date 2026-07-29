@@ -1,0 +1,58 @@
+# C2CS conformance fixture manifest.
+# Paths are relative to this file. See README.md for how to consume it.
+
+c2cs-conformance: "0.1"
+schema: "0.2"
+registry: "0.1"
+
+documents:
+  valid:
+    # the reference document family
+    - ../examples/credit-service.c2cs-contract.yaml
+    - ../examples/credit-service.inferred.c2cs-assessment.yaml
+    - ../examples/credit-service.observed.c2cs-assessment.yaml
+    - ../examples/credit-service.c2cs-verdict.yaml
+    # minimal documents
+    - documents/valid/minimal-contract.yaml
+    - documents/valid/minimal-observed-assessment.yaml
+    - documents/valid/minimal-inferred-assessment.yaml
+  invalid:
+    - file: documents/invalid/contract-claim-with-confidence.yaml
+      rule: "ADR-0001 invariant 1: contracts carry no inferred/observed qualifiers"
+    - file: documents/invalid/contract-bad-claim-id.yaml
+      rule: "ADR-0005: claim IDs are lowercase dotted segments"
+    - file: documents/invalid/assessment-with-forbidden.yaml
+      rule: "ADR-0001 invariant 2: assessments carry no normative content"
+    - file: documents/invalid/assessment-category-missing-status.yaml
+      rule: "ADR-0006: every category carries an explicit status — silence is a violation"
+    - file: documents/invalid/assessment-not-analyzed-with-claims.yaml
+      rule: "ADR-0006: not-analyzed carries no claims (unknown is not empty)"
+    - file: documents/invalid/observed-missing-window.yaml
+      rule: "ADR-0003: observed assessments state their window"
+    - file: documents/invalid/assessment-missing-producer-pin.yaml
+      rule: "ADR-0001: producer pinning requires the registry version"
+    - file: documents/invalid/inferred-claim-missing-confidence.yaml
+      rule: "ADR-0011: inferred claims require a confidence"
+
+verification:
+  - case: verification/case-01-confirmed-conformant
+    expect: conformant
+    exercises: "the golden path — every declared claim confirmed"
+  - case: verification/case-02-not-observed-conformant
+    expect: conformant
+    exercises: "not_observed is an absence of observation, not a violation"
+  - case: verification/case-03-drift-closed-not-conformant
+    expect: not-conformant
+    exercises: "undeclared behavior under closed mode is drift"
+  - case: verification/case-04-forbidden-violation
+    expect: not-conformant
+    exercises: "prohibition matching; drift reported under both headings"
+  - case: verification/case-05-unknown-undetermined
+    expect: undetermined
+    exercises: "unknown prevents a positive closed-mode verdict (ADR-0006)"
+  - case: verification/case-06-open-mode-drift-conformant
+    expect: conformant
+    exercises: "mode semantics — same events as case 03, only the mode differs"
+  - case: verification/case-07-aggregation-union
+    expect: conformant
+    exercises: "ADR-0012 aggregation — sighting beats empty, analyzed beats not-analyzed, order-independent"

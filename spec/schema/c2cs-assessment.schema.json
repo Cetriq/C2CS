@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://c2cs.dev/schema/0.2/assessment",
+  "title": "C2CS 0.2 — assessment document",
+  "type": "object",
+  "properties": {
+    "c2cs": { "$ref": "common#/$defs/schemaVersion" },
+    "kind": { "const": "assessment" },
+    "registry": { "$ref": "common#/$defs/registryVersion" },
+    "assessment": {
+      "type": "object",
+      "properties": {
+        "kind": { "enum": ["inferred", "observed"] },
+        "window": {
+          "type": "object",
+          "properties": {
+            "from": { "$ref": "common#/$defs/timestamp" },
+            "to": { "$ref": "common#/$defs/timestamp" }
+          },
+          "required": ["from", "to"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["kind"],
+      "additionalProperties": false
+    },
+    "producer": { "$ref": "common#/$defs/producer" },
+    "contract": { "$ref": "common#/$defs/contractRef" },
+    "subject": { "$ref": "common#/$defs/subject" },
+    "capabilities": {
+      "type": "object",
+      "propertyNames": { "$ref": "common#/$defs/categoryName" },
+      "additionalProperties": { "$ref": "#/$defs/categoryReport" }
+    },
+    "concepts": {
+      "type": "object",
+      "properties": {
+        "operations": { "type": "array", "items": { "$ref": "#/$defs/inferredOperation" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["c2cs", "kind", "registry", "assessment", "producer", "contract", "subject", "capabilities"],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$comment": "Observed assessments require a window; inferred assessments carry none.",
+      "if": { "properties": { "assessment": { "properties": { "kind": { "const": "observed" } } } } },
+      "then": {
+        "properties": {
+          "assessment": { "required": ["kind", "window"] },
+          "producer": { "properties": { "model": false } },
+          "concepts": false,
+          "capabilities": {
+            "additionalProperties": {
+              "properties": {
+                "claims": { "items": { "$ref": "#/$defs/observedClaim" } }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "assessment": { "properties": { "window": false } },
+          "producer": { "required": ["tool", "registry", "schema", "model"] },
+          "capabilities": {
+            "additionalProperties": {
+              "properties": {
+                "claims": { "items": { "$ref": "#/$defs/inferredClaim" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "categoryReport": {
+      "$comment": "Three-valued semantics (ADR-0006): claims present, claims empty, or not analyzed. Silence is a spec violation; claims are required iff analyzed.",
+      "type": "object",
+      "properties": {
+        "status": { "enum": ["analyzed", "not-analyzed"] },
+        "claims": { "type": "array" }
+      },
+      "required": ["status"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "analyzed" } } },
+          "then": { "required": ["status", "claims"] },
+          "else": { "properties": { "claims": false } }
+        }
+      ]
+    },
+    "inferredClaim": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common#/$defs/claimId" },
+        "confidence": { "$ref": "common#/$defs/confidence" },
+        "source": { "type": "string", "minLength": 1 }
+      },
+      "required": ["id", "confidence"],
+      "$comment": "Additional properties are matcher attributes per the registry category.",
+      "allOf": [
+        { "not": { "required": ["evidence"] } },
+        { "not": { "required": ["first_seen"] } },
+        { "not": { "required": ["last_seen"] } },
+        { "not": { "required": ["by"] } },
+        { "not": { "required": ["date"] } }
+      ]
+    },
+    "observedClaim": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common#/$defs/claimId" },
+        "evidence": { "type": "string", "minLength": 1 },
+        "first_seen": { "$ref": "common#/$defs/timestamp" },
+        "last_seen": { "$ref": "common#/$defs/timestamp" }
+      },
+      "required": ["id", "evidence", "first_seen", "last_seen"],
+      "$comment": "Additional properties are matcher attributes per the registry category.",
+      "allOf": [
+        { "not": { "required": ["confidence"] } },
+        { "not": { "required": ["source"] } },
+        { "not": { "required": ["by"] } },
+        { "not": { "required": ["date"] } }
+      ]
+    },
+    "inferredOperation": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common#/$defs/claimId" },
+        "summary": { "type": "string", "minLength": 1 },
+        "reads": { "type": "array", "items": { "$ref": "common#/$defs/entityName" } },
+        "writes": { "type": "array", "items": { "$ref": "common#/$defs/entityName" } },
+        "uses": { "type": "array", "items": { "$ref": "common#/$defs/claimId" } },
+        "confidence": { "$ref": "common#/$defs/confidence" }
+      },
+      "required": ["id", "summary", "confidence"],
+      "additionalProperties": false
+    }
+  }
+}

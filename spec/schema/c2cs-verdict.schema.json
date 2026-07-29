@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://c2cs.dev/schema/0.2/verdict",
+  "title": "C2CS 0.2 — verdict document",
+  "type": "object",
+  "properties": {
+    "c2cs": { "$ref": "common#/$defs/schemaVersion" },
+    "kind": { "const": "verdict" },
+    "registry": { "$ref": "common#/$defs/registryVersion" },
+    "producer": { "$ref": "common#/$defs/producer" },
+    "contract": {
+      "type": "object",
+      "properties": {
+        "subject": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "common#/$defs/digest" },
+        "mode": { "enum": ["closed", "open"] }
+      },
+      "required": ["subject", "digest", "mode"],
+      "additionalProperties": false
+    },
+    "evaluated_over": {
+      "type": "object",
+      "properties": {
+        "from": { "$ref": "common#/$defs/timestamp" },
+        "to": { "$ref": "common#/$defs/timestamp" },
+        "assessments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "digest": { "$ref": "common#/$defs/digest" },
+              "kind": { "enum": ["inferred", "observed"] }
+            },
+            "required": ["digest", "kind"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["from", "to", "assessments"],
+      "additionalProperties": false
+    },
+    "results": {
+      "type": "object",
+      "properties": {
+        "claims": { "type": "array", "items": { "$ref": "#/$defs/claimResult" } },
+        "forbidden": { "type": "array", "items": { "$ref": "#/$defs/prohibitionResult" } },
+        "drift": { "type": "array", "items": { "$ref": "#/$defs/driftResult" } }
+      },
+      "additionalProperties": false
+    },
+    "overall": {
+      "type": "object",
+      "properties": {
+        "outcome": { "enum": ["conformant", "not-conformant", "undetermined"] },
+        "coverage": {
+          "type": "object",
+          "propertyNames": { "$ref": "common#/$defs/categoryName" },
+          "additionalProperties": { "enum": ["analyzed", "unknown"] }
+        }
+      },
+      "required": ["outcome", "coverage"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["c2cs", "kind", "registry", "producer", "contract", "evaluated_over", "results", "overall"],
+  "additionalProperties": false,
+  "$defs": {
+    "claimResult": {
+      "$comment": "Keyed by claim ID, or by category for a contract's explicit empty set (which has no claim ID — the category itself is the claim).",
+      "type": "object",
+      "properties": {
+        "claim": { "$ref": "common#/$defs/claimId" },
+        "category": { "$ref": "common#/$defs/categoryName" },
+        "verdict": { "enum": ["confirmed", "not_observed"] },
+        "matched": { "type": "array", "items": { "$ref": "common#/$defs/claimRef" } },
+        "specificity": { "type": "string", "minLength": 1 }
+      },
+      "required": ["verdict"],
+      "oneOf": [{ "required": ["claim"] }, { "required": ["category"] }],
+      "additionalProperties": false
+    },
+    "prohibitionResult": {
+      "type": "object",
+      "properties": {
+        "claim": { "$ref": "common#/$defs/claimId" },
+        "verdict": { "enum": ["violation", "not_observed"] },
+        "matched": { "type": "array", "items": { "$ref": "common#/$defs/claimRef" } }
+      },
+      "required": ["claim", "verdict"],
+      "additionalProperties": false
+    },
+    "driftResult": {
+      "type": "object",
+      "properties": {
+        "observed": { "$ref": "common#/$defs/claimRef" },
+        "category": { "$ref": "common#/$defs/categoryName" },
+        "note": { "type": "string" }
+      },
+      "required": ["observed", "category"],
+      "additionalProperties": false
+    }
+  }
+}

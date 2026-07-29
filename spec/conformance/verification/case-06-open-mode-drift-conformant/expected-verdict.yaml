@@ -1,0 +1,31 @@
+# Expected verdict — case 06. Same events as case 03; only the mode differs. No category-level entries — under open mode, omission is not a claim.
+# Comparison rules (conformance README): producer.tool compares as a wildcard;
+# everything else is normative.
+c2cs: "0.2"
+kind: verdict
+registry: "0.1"
+producer:
+  tool: example-verifier/0.0.0
+  registry: "0.1"
+  schema: "0.2"
+contract:
+  subject: pkg:generic/fixture-svc@1.0.0
+  digest: sha256:0c060c060c060c060c060c060c060c060c060c060c060c060c060c060c060c06
+  mode: open
+evaluated_over:
+  from: "2026-07-01T00:00Z"
+  to: "2026-07-02T00:00Z"
+  assessments:
+    - {digest: "sha256:0a060a060a060a060a060a060a060a060a060a060a060a060a060a060a060a06", kind: observed}
+results:
+  claims:
+    - {claim: cap.net.api, verdict: confirmed, matched: ["sha256:0a060a060a060a060a060a060a060a060a060a060a060a060a060a060a060a06#obs.net.1"], specificity: exact}
+  drift:
+    - {observed: "sha256:0a060a060a060a060a060a060a060a060a060a060a060a060a060a060a060a06#obs.net.9", category: network, note: "informative under open mode — undeclared behavior is unknown, not a violation"}
+overall:
+  outcome: conformant
+  coverage:
+    network: analyzed
+    filesystem: analyzed
+    process: analyzed
+    environment: analyzed

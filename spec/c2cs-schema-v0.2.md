@@ -296,6 +296,8 @@ dense representation. Unchanged from v0.1.
   fixtures exercise each entry (ADR-0003).
 - The `except:` matcher form is now defined per category in the registry; fixtures are
   what will make it normative.
-- JSON Schema files for the three document kinds + the first conformance fixtures.
+- JSON Schemas now exist at [`schema/`](schema/README.md) and the first conformance
+  fixtures at [`conformance/`](conformance/README.md) — 15 document fixtures and 7
+  golden verification cases. Remaining: per-category matcher-grammar fixtures.
 - Whether mechanically derived static findings deserve a third assessment kind admissible
   in verdicts (deferred from ADR-0003).

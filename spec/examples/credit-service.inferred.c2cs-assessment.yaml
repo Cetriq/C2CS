@@ -16,14 +16,14 @@ producer:
 
 contract:
   subject: pkg:nuget/CreditService@2.1.0
-  digest: sha256:c0ffee…
+  digest: sha256:c0ffee0000000000000000000000000000000000000000000000000000000000
 
 subject:
   logical: pkg:nuget/CreditService
   version: "2.1.0"
   artifacts:
     - path: bin/CreditService.dll
-      digest: sha256:9b1f6c…
+      digest: sha256:9b1f6c0000000000000000000000000000000000000000000000000000000000
 
 # Three-valued semantics (ADR-0006): every registry category appears with explicit status.
 capabilities:

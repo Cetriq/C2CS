@@ -6,6 +6,15 @@ shipped when.
 
 ## Unreleased
 
+- **Implementer package (2026-07-29):** JSON Schemas for the three document kinds
+  (`schema/`, draft 2020-12, strict per version) and the first conformance fixtures
+  (`conformance/`): 7 valid documents, 8 invalid documents each naming the rule it
+  violates, 7 golden verification cases with expected verdicts, a fixture manifest, an
+  implementer guide, and an informative structural checker. Example digests upgraded to
+  full sha256 so the reference family validates strictly. Gap recorded: per-category
+  matcher-grammar fixtures are the next addition; the registry stays draft until they
+  exist.
+
 - **F3 adopted (2026-07-29):** optional `rationale` on capability claims (schema v0.2
   text and contract example) — requested independently by the GRC and AI-agent
   walkthrough consumers.

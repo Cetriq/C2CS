@@ -12,28 +12,28 @@ producer:
 
 contract:
   subject: pkg:nuget/CreditService@2.1.0
-  digest: sha256:c0ffee…
+  digest: sha256:c0ffee0000000000000000000000000000000000000000000000000000000000
   mode: closed
 
 evaluated_over:
   from: 2026-07-26T00:00Z
   to: 2026-07-28T12:00Z
   assessments:
-    - {digest: "sha256:aa11…", kind: observed}
+    - {digest: "sha256:aa11000000000000000000000000000000000000000000000000000000000000", kind: observed}
     # inferred assessments never participate in verdicts (ADR-0003)
 
 results:
   claims:
     - claim: cap.net.db
       verdict: confirmed
-      matched: ["sha256:aa11…#obs.net.1"]
+      matched: ["sha256:aa11000000000000000000000000000000000000000000000000000000000000#obs.net.1"]
       specificity: exact
     - claim: cap.net.audit
       verdict: not_observed        # an absence of observation, nothing more
       specificity: exact
     - claim: cap.fs.applog
       verdict: confirmed
-      matched: ["sha256:aa11…#obs.fs.1"]
+      matched: ["sha256:aa11000000000000000000000000000000000000000000000000000000000000#obs.fs.1"]
       specificity: prefix
     - category: process            # category-level entry: the contract's explicit empty
       verdict: confirmed           # set has no claim ID — the category itself is the claim
@@ -42,10 +42,10 @@ results:
   forbidden:
     - claim: forb.net.external
       verdict: violation
-      matched: ["sha256:aa11…#obs.net.9"]
+      matched: ["sha256:aa11000000000000000000000000000000000000000000000000000000000000#obs.net.9"]
 
   drift:
-    - observed: "sha256:aa11…#obs.net.9"
+    - observed: "sha256:aa11000000000000000000000000000000000000000000000000000000000000#obs.net.9"
       category: network
       note: outbound to telemetry.vendor.example:443 covered by no declared claim;
         also triggers forb.net.external and is reported under both headings

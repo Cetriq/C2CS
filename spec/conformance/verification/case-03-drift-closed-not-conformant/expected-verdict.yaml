@@ -1,0 +1,34 @@
+# Expected verdict — case 03. Drift is a violation-class outcome under closed mode.
+# Comparison rules (conformance README): producer.tool compares as a wildcard;
+# everything else is normative.
+c2cs: "0.2"
+kind: verdict
+registry: "0.1"
+producer:
+  tool: example-verifier/0.0.0
+  registry: "0.1"
+  schema: "0.2"
+contract:
+  subject: pkg:generic/fixture-svc@1.0.0
+  digest: sha256:0c030c030c030c030c030c030c030c030c030c030c030c030c030c030c030c03
+  mode: closed
+evaluated_over:
+  from: "2026-07-01T00:00Z"
+  to: "2026-07-02T00:00Z"
+  assessments:
+    - {digest: "sha256:0a030a030a030a030a030a030a030a030a030a030a030a030a030a030a030a03", kind: observed}
+results:
+  claims:
+    - {claim: cap.net.api, verdict: confirmed, matched: ["sha256:0a030a030a030a030a030a030a030a030a030a030a030a030a030a030a030a03#obs.net.1"], specificity: exact}
+    - {category: filesystem, verdict: confirmed, matched: []}
+    - {category: process, verdict: confirmed, matched: []}
+    - {category: environment, verdict: confirmed, matched: []}
+  drift:
+    - {observed: "sha256:0a030a030a030a030a030a030a030a030a030a030a030a030a030a030a030a03#obs.net.9", category: network, note: outbound to telemetry.external.test:443 covered by no declared claim}
+overall:
+  outcome: not-conformant
+  coverage:
+    network: analyzed
+    filesystem: analyzed
+    process: analyzed
+    environment: analyzed

@@ -1,0 +1,19 @@
+# Fixture contract — case 02. Declared capability never exercised in the window.
+c2cs: "0.2"
+kind: contract
+registry: "0.1"
+subject:
+  logical: pkg:generic/fixture-svc
+  version: "1.0.0"
+  artifacts:
+    - path: bin/fixture-svc
+      digest: sha256:f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1
+mode: closed
+capabilities:
+  network:
+    - id: cap.net.api
+      direction: outbound
+      host: api.internal.test
+      port: 443
+      by: fixtures@c2cs.dev
+      date: "2026-07-01"

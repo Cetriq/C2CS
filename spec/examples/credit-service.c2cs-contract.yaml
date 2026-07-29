@@ -10,7 +10,7 @@ subject:
   version: "2.1.0"
   artifacts:
     - path: bin/CreditService.dll
-      digest: sha256:9b1f6c…
+      digest: sha256:9b1f6c0000000000000000000000000000000000000000000000000000000000
   sbom: sbom/credit-service.cdx.json
 
 mode: closed          # least privilege: anything not declared here is forbidden
@@ -32,7 +32,7 @@ capabilities:
       rationale: Credit decisions are audit-logged per retention policy.
       by: claes@acme.example
       date: 2026-07-28
-      promoted_from: "sha256:bb22…#inf.net.audit"   # lifted from an inferred assessment
+      promoted_from: "sha256:bb22000000000000000000000000000000000000000000000000000000000000#inf.net.audit"   # lifted from an inferred assessment
 
   filesystem:
     - id: cap.fs.applog
@@ -62,7 +62,7 @@ concepts:
       uses: [cap.net.db, cap.net.audit, cap.fs.applog]
       by: claes@acme.example
       date: 2026-07-28
-      promoted_from: "sha256:bb22…#inf.op.evaluate"
+      promoted_from: "sha256:bb22000000000000000000000000000000000000000000000000000000000000#inf.op.evaluate"
   data:
     entities:
       - name: Customer

@@ -1,0 +1,33 @@
+# Fixture observed assessment — case 07. Harness A: full instrumentation, saw nothing.
+c2cs: "0.2"
+kind: assessment
+registry: "0.1"
+assessment:
+  kind: observed
+  window: {from: "2026-07-01T00:00Z", to: "2026-07-02T00:00Z"}
+producer:
+  tool: fixture-harness/0.1.0
+  registry: "0.1"
+  schema: "0.2"
+contract:
+  subject: pkg:generic/fixture-svc@1.0.0
+  digest: sha256:0c070c070c070c070c070c070c070c070c070c070c070c070c070c070c070c07
+subject:
+  logical: pkg:generic/fixture-svc
+  version: "1.0.0"
+  artifacts:
+    - path: bin/fixture-svc
+      digest: sha256:f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1
+capabilities:
+  network:
+    status: analyzed
+    claims: []
+  filesystem:
+    status: analyzed
+    claims: []
+  process:
+    status: analyzed
+    claims: []
+  environment:
+    status: analyzed
+    claims: []

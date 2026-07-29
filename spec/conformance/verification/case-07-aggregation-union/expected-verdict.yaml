@@ -1,0 +1,33 @@
+# Expected verdict — case 07. B's sighting outranks A's empty (existential union); A's analyzed outranks B's not-analyzed (knowledge-maximal coverage). Order-independent: swapping A and B MUST yield this same verdict.
+# Comparison rules (conformance README): producer.tool compares as a wildcard;
+# everything else is normative.
+c2cs: "0.2"
+kind: verdict
+registry: "0.1"
+producer:
+  tool: example-verifier/0.0.0
+  registry: "0.1"
+  schema: "0.2"
+contract:
+  subject: pkg:generic/fixture-svc@1.0.0
+  digest: sha256:0c070c070c070c070c070c070c070c070c070c070c070c070c070c070c070c07
+  mode: closed
+evaluated_over:
+  from: "2026-07-01T00:00Z"
+  to: "2026-07-03T00:00Z"
+  assessments:
+    - {digest: "sha256:0a070a070a070a070a070a070a070a070a070a070a070a070a070a070a070a07", kind: observed}
+    - {digest: "sha256:0b070b070b070b070b070b070b070b070b070b070b070b070b070b070b070b07", kind: observed}
+results:
+  claims:
+    - {claim: cap.net.api, verdict: confirmed, matched: ["sha256:0b070b070b070b070b070b070b070b070b070b070b070b070b070b070b070b07#obs.net.1"], specificity: exact}
+    - {category: filesystem, verdict: confirmed, matched: []}
+    - {category: process, verdict: confirmed, matched: []}
+    - {category: environment, verdict: confirmed, matched: []}
+overall:
+  outcome: conformant
+  coverage:
+    network: analyzed
+    filesystem: analyzed
+    process: analyzed
+    environment: analyzed

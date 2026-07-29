@@ -107,6 +107,8 @@ C2CS/
 │   ├── c2cs-schema-v0.1.md    # superseded, kept for history
 │   ├── GOVERNANCE.md          # change process, version promises, neutrality commitment
 │   ├── CHANGELOG.md           # release record for the normative artifacts
+│   ├── schema/                # JSON Schemas for the three document kinds
+│   ├── conformance/           # fixtures + implementer guide ("the operative definition")
 │   ├── design/                # ADRs 0001–0013 (all accepted) + index
 │   ├── registry/              # the vocabulary: effect categories, relations, concepts
 │   ├── walkthroughs/          # the five consumers reading the example documents

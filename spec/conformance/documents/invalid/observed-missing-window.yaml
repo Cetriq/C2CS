@@ -1,0 +1,39 @@
+# INVALID — observed assessments must state their window (ADR-0003).
+c2cs: "0.2"
+kind: assessment
+registry: "0.1"
+assessment:
+  kind: observed
+producer:
+  tool: fixture-harness/0.1.0
+  registry: "0.1"
+  schema: "0.2"
+contract:
+  subject: pkg:generic/fixture-svc@1.0.0
+  digest: sha256:0c000c000c000c000c000c000c000c000c000c000c000c000c000c000c000c00
+subject:
+  logical: pkg:generic/fixture-svc
+  version: "1.0.0"
+  artifacts:
+    - path: bin/fixture-svc
+      digest: sha256:f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1
+capabilities:
+  network:
+    status: analyzed
+    claims:
+      - id: obs.net.1
+        direction: outbound
+        host: api.internal.test
+        port: 443
+        evidence: c2cs-trace://fixture/net#1
+        first_seen: 2026-07-01T06:00Z
+        last_seen: 2026-07-01T18:00Z
+  filesystem:
+    status: analyzed
+    claims: []
+  process:
+    status: analyzed
+    claims: []
+  environment:
+    status: analyzed
+    claims: []

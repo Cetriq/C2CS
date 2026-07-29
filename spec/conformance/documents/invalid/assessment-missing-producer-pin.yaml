@@ -1,0 +1,39 @@
+# INVALID — producer pinning requires the registry version (ADR-0001).
+c2cs: "0.2"
+kind: assessment
+registry: "0.1"
+assessment:
+  kind: observed
+  window: {from: "2026-07-01T00:00Z", to: "2026-07-02T00:00Z"}
+producer:
+  tool: fixture-harness/0.1.0
+  schema: "0.2"
+contract:
+  subject: pkg:generic/fixture-svc@1.0.0
+  digest: sha256:0c000c000c000c000c000c000c000c000c000c000c000c000c000c000c000c00
+subject:
+  logical: pkg:generic/fixture-svc
+  version: "1.0.0"
+  artifacts:
+    - path: bin/fixture-svc
+      digest: sha256:f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1
+capabilities:
+  network:
+    status: analyzed
+    claims:
+      - id: obs.net.1
+        direction: outbound
+        host: api.internal.test
+        port: 443
+        evidence: c2cs-trace://fixture/net#1
+        first_seen: 2026-07-01T06:00Z
+        last_seen: 2026-07-01T18:00Z
+  filesystem:
+    status: analyzed
+    claims: []
+  process:
+    status: analyzed
+    claims: []
+  environment:
+    status: analyzed
+    claims: []
