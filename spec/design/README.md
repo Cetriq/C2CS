@@ -27,7 +27,7 @@ and combined.
 | [0007](adr-0007-spec-governance.md) | Spec governance, versioning, and registry evolution | Accepted |
 | [0008](adr-0008-normative-scope.md) | Normative scope — standard versus reference implementation | Accepted |
 | [0010](adr-0010-semantic-stability.md) | Semantic stability | Accepted |
-| [0014](adr-0014-licensing.md) | Licensing of the specification, fixtures, tooling, and name | Proposed |
+| [0014](adr-0014-licensing.md) | Licensing of the specification, fixtures, tooling, and name | Accepted |
 
 ### Information model
 

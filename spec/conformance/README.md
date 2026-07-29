@@ -74,8 +74,18 @@ ADR-0012 (admissibility, aggregation). In outline:
 ## Pass criteria — three scoped conformance claims
 
 Conformance is claimed per capability, so an implementation can truthfully support part
-of the standard without claiming all of it. Claims are always scoped to schema **and**
-registry versions (ADR-0008):
+of the standard without claiming all of it. Claims are always bound to specific versions
+— schema, registry, **and the conformance-suite version or commit digest the fixtures
+were taken from** (ADR-0008/0014). A claim against floating "latest" fixtures is not a
+valid claim: it would silently stop being true when the main branch moves. Valid claim
+form:
+
+```
+C2CS document-schema conformant
+  Specification:      C2CS schema v0.2
+  Conformance suite:  v0.2.0 (or commit/digest)
+  Result:             all applicable fixtures passed
+```
 
 | Claim | Requires passing |
 |-------|------------------|

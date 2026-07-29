@@ -6,6 +6,11 @@ shipped when.
 
 ## Unreleased
 
+- **Licensing decided, ADR-0014 accepted (2026-07-29):** repository re-licensed to
+  Apache 2.0 (everything except expressly identified exceptions; the whitepaper stays
+  CC BY 4.0 under `paper/LICENSE`), `TRADEMARKS.md` added (descriptive use free;
+  conformance claims version-bound to spec + suite; no certification language), and the
+  conformance claim format now requires suite version/digest binding.
 - **Registry matcher fixtures (2026-07-29):** 50 (scope, event) cases across the four
   active categories (`conformance/registry/`), exercising suffix and name/IP semantics,
   `except:` subtraction, port ranges, path prefixes and `..` resolution, basename

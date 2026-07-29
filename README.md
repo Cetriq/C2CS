@@ -146,8 +146,17 @@ agents that would consume semantic models. Spec changes follow the RFC process d
 
 ## License
 
-This work is currently licensed under
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). The licensing model
-for the specification artifacts is under review
-([ADR-0007](spec/design/adr-0007-spec-governance.md)) and will be settled before any
-tooling release.
+Everything in this repository is licensed under [Apache License 2.0](LICENSE), except
+material expressly identified as excepted. The sole exception is the whitepaper:
+[`paper/`](paper/) remains under
+[Creative Commons Attribution 4.0 International](paper/LICENSE), matching its published
+Zenodo archives. This split — one permissive license with an express patent grant for
+the standard and its tooling, a documentation license for the article — is decided in
+[ADR-0014](spec/design/adr-0014-licensing.md).
+
+Schemas, conformance fixtures, and registry content may be embedded in external products
+and test suites, including commercial ones — that is intended use, not an edge case.
+
+The **C2CS name and conformance claims** are governed separately by
+[TRADEMARKS.md](TRADEMARKS.md): descriptive use is free; conformance claims must be bound
+to specific specification and conformance-suite versions.

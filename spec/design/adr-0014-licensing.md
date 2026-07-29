@@ -1,7 +1,15 @@
 # ADR-0014: Licensing of the specification, fixtures, tooling, and name
 
-**Status:** Proposed
+**Status:** Accepted (2026-07-29)
 **Date:** 2026-07-29
+
+> Accepted with four mandatory amendments from review: the Apache→CSL transition claim
+> qualified (re-licensing requires separate legal/governance review; published versions
+> keep their license), the difference between Apache 2.0's contribution-based patent
+> grant and CSL's implementation-oriented Necessary Claims stated explicitly, conformance
+> claims bound to specific spec and fixture-suite versions rather than floating "current
+> fixtures", and the repository license scope defined as everything-except-identified-
+> exceptions so future directories are unambiguous.
 
 ## Context
 
@@ -45,12 +53,12 @@ contributor commitments and review-period machinery presume exactly the neutral
 governance body C2CS does not yet have (ADR-0007's staged neutrality). Adopting it now
 buys process weight before there are contributors to bind.
 
-### Option C — Apache 2.0 for all spec artifacts now; CSL designated as the upgrade path
-- **Q1–Q3, one answer:** everything under `spec/` — normative text, ADRs, registry,
-  examples, JSON Schemas, conformance fixtures, and informative tooling — plus the coming
-  reference extractor, under **Apache 2.0**. One well-understood license, an express
-  patent grant, and no license boundary running through the repo that implementers must
-  reason about.
+### Option C — Apache 2.0 now; a qualified path to CSL later
+- **Q1–Q3, one answer:** **everything in the repository is Apache 2.0, except material
+  expressly identified as excepted.** That covers the normative text, ADRs, registry,
+  examples, JSON Schemas, conformance fixtures, informative tooling, and any future
+  directory (the extractor included) without per-directory ambiguity. The sole exception
+  is the whitepaper (`paper/`).
 - **The whitepaper keeps CC BY 4.0.** It is an article; the license fits, and the Zenodo
   archives (v0.1.0–v0.2.0) were published under it.
 - **Q4 — explicit yes.** Apache 2.0 already permits embedding schemas, fixtures, and
@@ -58,26 +66,50 @@ buys process weight before there are contributors to bind.
   the conformance README states this expressly so nobody has to ask a lawyer to build a
   validator.
 - **Q5 — trademarks are not licenses.** A separate `TRADEMARKS.md` policy governs the
-  name: free descriptive use ("compatible with C2CS", criticism, articles); the
-  *conformance claims* of the three classes may be used only when scoped to schema and
-  registry versions and backed by passing the current fixtures (the SPDX
-  version-recitation pattern; the Kubernetes conformance-mark pattern). Business action
-  item recorded, not solved here: actually registering the mark.
-- **Upgrade path:** at the ADR-0007 neutrality transition, re-license the normative set
-  under CSL 1.0 (or the receiving foundation's regime). Apache 2.0 → CSL is a widening
-  for implementers, not a rug-pull, and SPDX demonstrates the combination.
+  name, distinguishing four levels: *descriptive use* (free — "implements C2CS schema
+  v0.2", criticism, articles), *conformance claims* (permitted only when **bound to a
+  specific specification version and a specific conformance-suite version or commit
+  digest**, with all applicable fixtures passed — never floating "current" fixtures,
+  which would silently falsify a truthful claim when `main` moves), *certification
+  language* (words like "certified", "officially approved", "endorsed" are not to be
+  used or implied while no formal certification program exists), and *logo/marks*
+  (separate permission). Business action item recorded, not solved here: actually
+  registering the mark.
+- **Patent posture, stated precisely:** Apache 2.0's grant is *contribution-based* — it
+  covers patent claims necessarily infringed by a contribution alone or combined with
+  the work it was contributed to. CSL's grant is *implementation-oriented* — built
+  around Necessary Claims for implementing the specification as such. Apache 2.0 gives
+  C2CS a far better posture than CC BY and is the right interim choice, but it is not
+  equivalent to a standards-specific patent regime over Necessary Claims; that
+  limitation is accepted in the current project phase and revisited at the neutrality
+  transition.
+- **Transition path, qualified:** at a future ADR-0007 neutrality transition,
+  *subsequent* specification versions may be adopted under CSL 1.0 or the receiving
+  organization's licensing regime. Such a transition requires a separate legal and
+  governance review of contribution rights (contributors retain copyright in their
+  contributions under the Apache model), the version boundary, and compatibility with
+  previously Apache-2.0-licensed material. **Already-published versions remain
+  available under Apache 2.0** — the version model is explicit:
+
+  ```
+  C2CS 0.x / 1.x        → Apache 2.0, permanently
+  future C2CS versions  → possibly CSL 1.0 or a foundation regime, decided then
+  ```
 
 ## Recommendation
 
 **Option C.** It answers all five questions with two licenses and one policy, matches
-the largest precedent family (OpenAPI/OTel/OCI), delivers the patent grant CC BY lacks,
-and defers standards-body machinery to the moment there is a standards body — consistent
-with how every other institutional decision in this project has been staged (ADR-0007).
+the largest precedent family (OpenAPI/OTel/OCI), delivers a patent grant CC BY lacks
+(with the contribution-based limitation stated above), and defers standards-body
+machinery to the moment there is a standards body — consistent with how every other
+institutional decision in this project has been staged (ADR-0007).
 
-Mechanically, on acceptance: `spec/LICENSE` (Apache 2.0) + a licensing section in the
-repo README and `spec/GOVERNANCE.md` updated; `paper/` keeps CC BY 4.0 via the root
-LICENSE with the split documented; `TRADEMARKS.md` drafted at repo root. Nothing
-normative is commercial, per ADR-0008 — this ADR fixes the *how*.
+Mechanically, on acceptance: root `LICENSE` becomes Apache 2.0 (the repository-wide
+default); the CC BY 4.0 text moves to `paper/LICENSE` as the identified exception;
+licensing sections in the repo README and `spec/GOVERNANCE.md` updated; `TRADEMARKS.md`
+drafted at repo root; the conformance README's claim format updated to require suite
+version/digest binding. Nothing normative is commercial, per ADR-0008 — this ADR fixes
+the *how*.
 
 ## Consequences
 

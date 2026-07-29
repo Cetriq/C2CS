@@ -72,11 +72,14 @@ anything anytime".
 
 ## Licensing
 
-The repository is currently CC BY 4.0. The survey from ADR-0007's action item is done
-and its recommendation is on the table as
-[ADR-0014](design/adr-0014-licensing.md) (proposed): Apache 2.0 for all `spec/`
-artifacts and tooling, CC BY 4.0 retained for the whitepaper, a separate trademark and
-conformance-claim policy, and CSL 1.0 designated as the upgrade path at the neutrality
-transition. The decision lands **before any tooling release**. Whatever the choice, the
-constraint from ADR-0008 stands: everything normative is open, and the patent posture
-will be explicit.
+Decided in [ADR-0014](design/adr-0014-licensing.md) (accepted 2026-07-29): the
+repository is **Apache 2.0** except material expressly identified as excepted — the sole
+exception being the whitepaper (`paper/`, CC BY 4.0). The name and conformance claims
+are governed by [`TRADEMARKS.md`](../TRADEMARKS.md); conformance claims bind to specific
+schema, registry, and conformance-suite versions. Apache 2.0's patent grant is
+contribution-based, not a standards-specific Necessary Claims regime — a limitation
+accepted for the current phase. At a future neutrality transition, *subsequent*
+specification versions may adopt CSL 1.0 or the receiving organization's regime after
+separate legal and governance review; already-published versions remain Apache 2.0
+permanently. The ADR-0008 constraint stands: everything normative is open, and the
+patent posture is explicit.
