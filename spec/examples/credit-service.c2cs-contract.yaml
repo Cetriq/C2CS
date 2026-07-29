@@ -29,6 +29,7 @@ capabilities:
       direction: outbound
       host: audit.internal.acme.example
       port: 443
+      rationale: Credit decisions are audit-logged per retention policy.
       by: claes@acme.example
       date: 2026-07-28
       promoted_from: "sha256:bb22…#inf.net.audit"   # lifted from an inferred assessment

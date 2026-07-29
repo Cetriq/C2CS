@@ -29,8 +29,9 @@ finding is input to the future composition ADR.
 
 **F3 — `rationale` is only on `forbidden`, and two consumers wanted it on capabilities
 too.** The GRC report wants "why is this allowed" alongside "why is this forbidden"; the
-AI agent wants to explain a capability to a developer. Candidate additive field for v0.3
-(`rationale` on capability claims, optional). Not adopted here — recorded for review.
+AI agent wants to explain a capability to a developer. **Adopted (2026-07-29):** optional
+`rationale` on capability claims is now in schema v0.2 and the contract example — two
+independent consumers asking for the same field is exactly how a field earns its place.
 
 **F4 — no strong cut candidates.** The audit found every schema v0.2 field touched by at
 least one consumer (including the promotion reviewer of F1). The closest to unused is
@@ -69,3 +70,15 @@ Method note: the walkthroughs are argued against the *current* documents — the
 hypothetical personas but concrete read-throughs, and they should be re-run (cheaply)
 whenever the schema changes. When the conformance fixtures exist, walkthroughs 02's steps
 become executable.
+
+## Planned
+
+The four walkthroughs above all *succeed*, and they all use the same example — two
+methodological weaknesses called out in review. Planned next:
+
+- **05 — a stress walkthrough that is allowed to fail.** Describe a system the model was
+  not designed around (a Kubernetes operator, PostgreSQL itself, a batch/ETL processor)
+  and record honestly where the model bends or breaks. The goal is a document that says
+  *here is the boundary* — the walkthrough counterpart of `effects/candidates.md`.
+- **A second example family in a different domain** (a CLI tool or a background job
+  worker), so the walkthroughs stop being calibrated to one service shape.

@@ -112,10 +112,16 @@ capabilities:
       direction: outbound
       host: db.internal.acme.example
       port: 5432
+      rationale: Credit evaluation reads and writes the credit database.   # optional
       by: claes@acme.example        # everything in a contract is declared, so no
       date: 2026-07-28              # provenance block — just who and when (+ optional
                                     # promoted_from, see Promotion)
 ```
+
+`rationale` is optional on capability claims and, as before, expected on `forbidden`
+entries. It is a qualifier (ADR-0009): human-facing justification that never affects
+matching. Adopted from walkthrough finding F3 — the GRC consumer and the AI agent both
+asked "why is this *allowed*", not only "why is this forbidden".
 
 Omission rule: under `closed` mode, a registry category absent from the contract is
 equivalent to "no capabilities of this category are allowed" (writing `network: []`
