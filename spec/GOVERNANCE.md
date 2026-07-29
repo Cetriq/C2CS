@@ -72,9 +72,11 @@ anything anytime".
 
 ## Licensing
 
-The repository is currently CC BY 4.0. The licensing model for the specification
-artifacts is an open action item (ADR-0007): specifications typically use Apache-2.0-style
-terms, Open Web Foundation agreements, or the Community Specification License — the
-survey and decision happen **before any tooling release**. Whatever the choice, the
+The repository is currently CC BY 4.0. The survey from ADR-0007's action item is done
+and its recommendation is on the table as
+[ADR-0014](design/adr-0014-licensing.md) (proposed): Apache 2.0 for all `spec/`
+artifacts and tooling, CC BY 4.0 retained for the whitepaper, a separate trademark and
+conformance-claim policy, and CSL 1.0 designated as the upgrade path at the neutrality
+transition. The decision lands **before any tooling release**. Whatever the choice, the
 constraint from ADR-0008 stands: everything normative is open, and the patent posture
 will be explicit.
