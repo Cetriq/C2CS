@@ -37,6 +37,16 @@ require success).
   Resolution equivalence is deliberately out of scope — it would make matching depend on
   DNS state at verification time, breaking determinism (ADR-0003). Harnesses SHOULD report
   the name when it is knowable.
+
+  *Why, by example:* a contract declares `host: db.internal.example`, and a harness
+  observed a connection to `10.0.0.7` on Tuesday. If matching resolved names, the verdict
+  would depend on what `db.internal.example` resolves to *when the verifier runs* —
+  Tuesday's `10.0.0.7` may be Friday's `10.0.0.9`, so the same contract and the same
+  assessment would yield `confirmed` on Tuesday and `drift` on Friday. Two verifiers
+  behind different resolvers would disagree the same way. Under the distinct-identity
+  rule the event simply doesn't match a name-scoped claim, deterministically — and the
+  operational fix is honest: instrument the harness to capture the name (SNI/DNS
+  correlation), or declare the address range you actually mean.
 - Suffix pattern `*.X` matches any name with at least one label before `.X`; it does not
   match `X` itself.
 - Port ranges are inclusive.

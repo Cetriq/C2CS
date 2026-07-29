@@ -14,6 +14,11 @@ moves faster — adding a category or concept is a registry release, not a schem
 fixtures exercise its meaning; the fixtures ship with the conformance suite, which does not
 exist yet. Until then, registry 0.1 is a draft for review, not a released vocabulary.
 
+Throughout the registry, **subject** means the software under description — the thing a
+document's `subject:` block identifies (schema v0.2, ADR-0005): its artifacts at rest, its
+processes at runtime. "Attributable to the subject" in an observation mapping means
+attributable to those processes.
+
 ## Contents
 
 | Section | Entries |
@@ -52,6 +57,29 @@ category missing any of them is not admissible:
 4. **Observation mapping** — which observable signals confirm an event exists, and what a
    harness must instrument before it may report `status: analyzed` for the category
    (ADR-0006: an uninstrumented category is `not-analyzed`, never `[]`).
+
+Where the active categories can be produced from — informative, for implementers planning
+an extractor or harness (*static* = static analysis of the artifact; *runtime* =
+instrumented runtime/libraries; *kernel* = kernel-level tracing):
+
+| Category | Static | Runtime | Kernel |
+|----------|--------|---------|--------|
+| `network` | partial | yes | yes |
+| `filesystem` | partial | yes | yes |
+| `process` | mostly | yes | yes |
+| `environment` | mostly | yes | **no** |
+
+"Partial"/"mostly" reflect that scopes (hosts, paths, executables) are often
+runtime-determined values static analysis cannot fully resolve — which lowers confidence
+or forces `not-analyzed`, per each category's extraction notes. `environment` is the one
+category invisible to kernel tracing; see its entry for why it is Tier 1 regardless.
+
+**Growth restraint (standing position):** these four categories are deliberately held
+stable until real extractors and harnesses have exercised them. Pressure for new
+categories (`messaging`, `cache`, `secrets`, …) goes through
+[`effects/candidates.md`](effects/candidates.md) first, against the admission bar — the
+current strength of Tier 1 is that four categories feel motivated, consistent, and small
+enough to implement on any platform, and that is worth defending.
 
 **Relations** (in [`relations.md`](relations.md)) add **domain**, **range**, and
 **direction** (ADR-0013).

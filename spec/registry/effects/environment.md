@@ -40,6 +40,18 @@ subject, with the variable name.
 This is the admission bar working as intended (ADR-0002 rule 1): the mapping is defined
 and existential — it is merely more expensive to instrument than the other categories.
 
+**Why this is still Tier 1.** This category is observed at a different level than the
+other three: network, filesystem, and process events are kernel-visible; environment reads
+are runtime-visible only. That asymmetry is real and worth stating — but the tier boundary
+is not "kernel-observable"; it is *existentially observable under a defined mapping*
+(ADR-0002/0012). The tier asks whether a claim has truth conditions an instrumented
+harness can check, not which layer does the checking. The practical consequence of the
+asymmetry is exactly the one the three-valued model was built for: harnesses without
+runtime instrumentation report `not-analyzed`, and closed-mode verdicts stay honest
+(ADR-0006). If experience shows the asymmetry causes real interop trouble, demotion to a
+Tier-2 concept is the escape hatch — via deprecation and a new identifier, never
+redefinition (ADR-0010).
+
 ## Examples
 
 ```yaml
