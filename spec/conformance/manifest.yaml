@@ -34,6 +34,12 @@ documents:
     - file: documents/invalid/inferred-claim-missing-confidence.yaml
       rule: "ADR-0011: inferred claims require a confidence"
 
+matchers:
+  - registry/network.yaml
+  - registry/filesystem.yaml
+  - registry/process.yaml
+  - registry/environment.yaml
+
 verification:
   - case: verification/case-01-confirmed-conformant
     expect: conformant

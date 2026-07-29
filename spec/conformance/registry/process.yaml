@@ -1,0 +1,60 @@
+# Registry matcher fixtures — category: process (registry 0.1).
+
+c2cs-matcher-fixtures: "0.1"
+registry: "0.1"
+category: process
+
+cases:
+  - name: exact-path
+    scope: {executable: /usr/bin/git}
+    event: {executable: /usr/bin/git}
+    matches: true
+    rule: exact executable path
+
+  - name: exact-path-other-location
+    scope: {executable: /usr/bin/git}
+    event: {executable: /usr/local/bin/git}
+    matches: false
+    rule: exact paths do not cover other locations
+
+  - name: prefix-directory
+    scope: {executable: /usr/libexec/tools/}
+    event: {executable: /usr/libexec/tools/convert}
+    matches: true
+    rule: trailing slash means directory-prefix scope (filesystem path rules apply)
+
+  - name: basename-matches-any-location
+    scope: {executable: git}
+    event: {executable: /usr/local/bin/git}
+    matches: true
+    rule: a basename form (no slash) matches the final path segment exactly
+
+  - name: basename-exact-segment-only
+    scope: {executable: git}
+    event: {executable: /usr/bin/git2}
+    matches: false
+    rule: basename matching is exact, not a prefix of the segment
+
+  - name: basename-case-sensitive
+    scope: {executable: git}
+    event: {executable: /usr/bin/Git}
+    matches: false
+    rule: executable paths follow filesystem case rules
+
+  - name: any-executable
+    scope: {executable: any}
+    event: {executable: /bin/sh}
+    matches: true
+    rule: any covers every executable
+
+  - name: except-subtracts
+    scope: {executable: any, except: [/bin/sh, /bin/bash]}
+    event: {executable: /bin/sh}
+    matches: false
+    rule: except subtracts from any
+
+  - name: except-leaves-rest
+    scope: {executable: any, except: [/bin/sh, /bin/bash]}
+    event: {executable: /usr/bin/git}
+    matches: true
+    rule: outside the exception, the scope applies

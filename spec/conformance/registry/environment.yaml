@@ -1,0 +1,54 @@
+# Registry matcher fixtures — category: environment (registry 0.1).
+
+c2cs-matcher-fixtures: "0.1"
+registry: "0.1"
+category: environment
+
+cases:
+  - name: exact-name
+    scope: {variable: DB_CONNECTION}
+    event: {variable: DB_CONNECTION}
+    matches: true
+    rule: exact variable name
+
+  - name: exact-name-case-sensitive
+    scope: {variable: PATH}
+    event: {variable: path}
+    matches: false
+    rule: variable names match case-sensitively, exactly as the platform reports them
+
+  - name: prefix-matches-longer
+    scope: {variable: "ASPNETCORE_*"}
+    event: {variable: ASPNETCORE_ENVIRONMENT}
+    matches: true
+    rule: "prefix pattern X_* matches names beginning with X_"
+
+  - name: prefix-requires-strictly-longer
+    scope: {variable: "ASPNETCORE_*"}
+    event: {variable: ASPNETCORE_}
+    matches: false
+    rule: the match must be strictly longer than the prefix
+
+  - name: prefix-does-not-match-other
+    scope: {variable: "ASPNETCORE_*"}
+    event: {variable: DOTNET_ROOT}
+    matches: false
+    rule: outside the prefix
+
+  - name: any-variable
+    scope: {variable: any}
+    event: {variable: HOME}
+    matches: true
+    rule: any covers every variable
+
+  - name: except-subtracts
+    scope: {variable: any, except: ["AWS_*", HOME]}
+    event: {variable: AWS_SECRET_ACCESS_KEY}
+    matches: false
+    rule: except subtracts prefix and exact forms alike
+
+  - name: except-leaves-rest
+    scope: {variable: any, except: ["AWS_*", HOME]}
+    event: {variable: LANG}
+    matches: true
+    rule: outside the exception, the scope applies

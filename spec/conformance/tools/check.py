@@ -95,6 +95,22 @@ def main():
         report(bool(errors), f"invalid  {rel}  [{entry['rule']}]",
                "" if errors else "expected schema rejection, document passed")
 
+    for rel in manifest.get("matchers", []):
+        doc = load_yaml(base / rel)
+        errs = []
+        if doc.get("category") is None:
+            errs.append("missing category")
+        for i, c in enumerate(doc.get("cases", []) or [{}]):
+            for field in ("name", "scope", "event", "matches", "rule"):
+                if field not in c:
+                    errs.append(f"cases[{i}]: missing {field}")
+            if not isinstance(c.get("matches"), bool):
+                errs.append(f"cases[{i}]: matches must be boolean")
+        names = [c.get("name") for c in doc.get("cases", [])]
+        if len(names) != len(set(names)):
+            errs.append("duplicate case names")
+        report(not errs, f"matcher  {rel} ({len(doc.get('cases', []))} cases)", "; ".join(errs[:3]))
+
     for case in manifest["verification"]:
         case_dir = base / case["case"]
         for f in sorted(case_dir.glob("*.yaml")):

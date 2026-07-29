@@ -10,9 +10,12 @@ relation vocabulary (ADR-0002, ADR-0013). It versions independently of the schem
 moves faster — adding a category or concept is a registry release, not a schema release
 (ADR-0007).
 
-**Status: draft.** Per ADR-0003, a registry entry is not complete until conformance
-fixtures exercise its meaning; the fixtures ship with the conformance suite, which does not
-exist yet. Until then, registry 0.1 is a draft for review, not a released vocabulary.
+**Status: draft, fixtures in place.** Per ADR-0003, a registry entry is not complete
+until conformance fixtures exercise its meaning. Matcher fixtures for all four active
+categories now exist ([`../conformance/registry/`](../conformance/registry/)) — 50 cases
+covering the grammars and normalization rules. Registry 0.1 graduates from draft when the
+conformance suite ships as part of a spec release (GOVERNANCE.md) and a first
+implementation has run it.
 
 Throughout the registry, **subject** means the software under description — the thing a
 document's `subject:` block identifies (schema v0.2, ADR-0005): its artifacts at rest, its

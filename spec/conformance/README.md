@@ -9,9 +9,15 @@ independence is the acceptance test for the spec itself.
 Contents:
 
 - [`manifest.yaml`](manifest.yaml) — the fixture index: valid documents, invalid
-  documents (each naming the rule it violates), and verification cases with expected
-  outcomes.
+  documents (each naming the rule it violates), matcher fixtures, and verification cases
+  with expected outcomes.
 - [`documents/`](documents/) — document-validity fixtures.
+- [`registry/`](registry/) — **matcher fixtures**, one file per Tier-1 category: pairs of
+  (scope, event) with the expected match result, exercising the registry's matcher
+  grammars and normalization rules (suffix and name/IP semantics, `except:` subtraction,
+  port ranges, path prefixes and `..` resolution, basename matching, environment
+  prefixes). These test the registry's normative matching semantics — distinct from
+  document structure and from verification algebra.
 - [`verification/`](verification/) — golden verification cases: a contract, one or more
   observed assessments, and the expected verdict.
 - [`tools/check.py`](tools/check.py) — informative structural checker (requires `pyyaml`
@@ -65,19 +71,24 @@ ADR-0012 (admissibility, aggregation). In outline:
 - Case 07 additionally requires **order-independence**: feeding the assessments in any
   order MUST yield the identical verdict.
 
-## Pass criteria
+## Pass criteria — three scoped conformance claims
 
-An implementation may claim *"validates C2CS 0.2 (registry 0.1)"* when it passes all
-document fixtures, and *"verifies C2CS 0.2 (registry 0.1)"* when it also reproduces all
-expected verdicts. Conformance claims are always scoped to schema **and** registry
-versions (ADR-0008).
+Conformance is claimed per capability, so an implementation can truthfully support part
+of the standard without claiming all of it. Claims are always scoped to schema **and**
+registry versions (ADR-0008):
+
+| Claim | Requires passing |
+|-------|------------------|
+| **C2CS document-schema conformant** (0.2) | all document fixtures: valid accepted, invalid rejected |
+| **C2CS registry-matcher conformant** (registry 0.1) | all matcher fixtures: every (scope, event) pair yields the expected result |
+| **C2CS verification-engine conformant** (0.2, registry 0.1) | both of the above, plus all verification cases reproduced — an engine contains a validator and a matcher by construction |
 
 ## Status and gaps
 
-- The fixture set is a first cut: it exercises the document invariants and the core
-  verdict semantics, but **matcher-grammar coverage is thin** — per-category fixtures
-  (host suffix rules, `except:` subtraction, path-prefix normalization) are the next
-  addition, and the registry stays *draft* until they exist (ADR-0003).
-- Expected verdicts are hand-computed. When a first verification engine exists, it runs
-  these cases and every disagreement is either an engine bug or a fixture bug — and a
-  fixture bug is a spec change (ADR-0008).
+- Matcher fixtures now cover the four active categories' grammars and normalization
+  rules. Coverage will grow with implementation experience — a matcher edge case found
+  by an engine becomes a fixture (and if fixtures must change, that is a spec change
+  through governance).
+- Expected results (verdicts and matches) are hand-computed. When a first engine exists,
+  it runs these cases and every disagreement is either an engine bug or a fixture bug —
+  and a fixture bug is a spec change (ADR-0008).

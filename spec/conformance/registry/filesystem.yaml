@@ -1,0 +1,78 @@
+# Registry matcher fixtures — category: filesystem (registry 0.1).
+
+c2cs-matcher-fixtures: "0.1"
+registry: "0.1"
+category: filesystem
+
+cases:
+  - name: prefix-matches-file-within
+    scope: {path: /var/log/svc/, access: write}
+    event: {path: /var/log/svc/app.log, access: write}
+    matches: true
+    rule: trailing slash means directory-prefix scope
+
+  - name: prefix-matches-nested
+    scope: {path: /var/log/svc/, access: write}
+    event: {path: /var/log/svc/2026/07/app.log, access: write}
+    matches: true
+    rule: prefix depth is unbounded
+
+  - name: prefix-does-not-match-sibling
+    scope: {path: /var/log/svc/, access: write}
+    event: {path: /var/log/svc2/app.log, access: write}
+    matches: false
+    rule: "prefix matching is per path segment — /var/log/svc/ does not cover /var/log/svc2/"
+
+  - name: exact-path-matches-itself
+    scope: {path: /etc/hosts, access: read}
+    event: {path: /etc/hosts, access: read}
+    matches: true
+    rule: no trailing slash means exact file
+
+  - name: exact-path-does-not-match-children
+    scope: {path: /etc/hosts, access: read}
+    event: {path: /etc/hosts.d/extra, access: read}
+    matches: false
+    rule: exact scopes cover exactly one path
+
+  - name: dotdot-normalization
+    scope: {path: /var/log/svc/, access: write}
+    event: {path: /var/log/other/../svc/app.log, access: write}
+    matches: true
+    rule: ". and .. segments are resolved before matching"
+
+  - name: case-sensitive
+    scope: {path: /var/log/svc/, access: write}
+    event: {path: /VAR/LOG/SVC/app.log, access: write}
+    matches: false
+    rule: path matching is case-sensitive; harnesses report canonical case
+
+  - name: access-class-mismatch
+    scope: {path: /var/log/svc/, access: write}
+    event: {path: /var/log/svc/app.log, access: read}
+    matches: false
+    rule: access classes are distinct
+
+  - name: access-list
+    scope: {path: /var/data/, access: [read, write]}
+    event: {path: /var/data/x.bin, access: read}
+    matches: true
+    rule: access lists enumerate
+
+  - name: execute-is-not-write
+    scope: {path: /usr/local/bin/, access: execute}
+    event: {path: /usr/local/bin/tool, access: write}
+    matches: false
+    rule: write does not fall under execute
+
+  - name: except-subtracts-subtree
+    scope: {path: /var/, access: write, except: [/var/log/svc/]}
+    event: {path: /var/log/svc/app.log, access: write}
+    matches: false
+    rule: except subtracts a subtree from a prefix scope
+
+  - name: except-leaves-rest-of-prefix
+    scope: {path: /var/, access: write, except: [/var/log/svc/]}
+    event: {path: /var/tmp/x, access: write}
+    matches: true
+    rule: outside the exception, the prefix applies

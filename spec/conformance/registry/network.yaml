@@ -1,0 +1,134 @@
+# Registry matcher fixtures — category: network (registry 0.1).
+# Each case: does `event` fall under `scope`, per the category's matcher grammar and
+# normalization rules? These fixtures are the operative definition of network matching.
+
+c2cs-matcher-fixtures: "0.1"
+registry: "0.1"
+category: network
+
+cases:
+  - name: exact-host-exact-port
+    scope: {direction: outbound, host: db.internal.test, port: 5432}
+    event: {direction: outbound, host: db.internal.test, port: 5432}
+    matches: true
+    rule: exact host and port
+
+  - name: port-mismatch
+    scope: {direction: outbound, host: db.internal.test, port: 5432}
+    event: {direction: outbound, host: db.internal.test, port: 5433}
+    matches: false
+    rule: exact port does not cover neighbors
+
+  - name: direction-mismatch
+    scope: {direction: outbound, host: db.internal.test, port: 5432}
+    event: {direction: inbound, host: db.internal.test, port: 5432}
+    matches: false
+    rule: direction is part of the claim body
+
+  - name: host-case-normalization
+    scope: {direction: outbound, host: db.internal.test}
+    event: {direction: outbound, host: DB.Internal.TEST, port: 5432}
+    matches: true
+    rule: host names are lowercased before matching
+
+  - name: trailing-dot-normalization
+    scope: {direction: outbound, host: db.internal.test}
+    event: {direction: outbound, host: "db.internal.test.", port: 5432}
+    matches: true
+    rule: trailing dot is stripped before matching
+
+  - name: omitted-port-matches-any
+    scope: {direction: outbound, host: db.internal.test}
+    event: {direction: outbound, host: db.internal.test, port: 9999}
+    matches: true
+    rule: port defaults to any
+
+  - name: suffix-matches-subdomain
+    scope: {direction: outbound, host: "*.internal.test"}
+    event: {direction: outbound, host: api.internal.test, port: 443}
+    matches: true
+    rule: "suffix pattern matches names with at least one label before the suffix"
+
+  - name: suffix-matches-deep-subdomain
+    scope: {direction: outbound, host: "*.internal.test"}
+    event: {direction: outbound, host: a.b.internal.test, port: 443}
+    matches: true
+    rule: suffix depth is unbounded
+
+  - name: suffix-does-not-match-bare-suffix
+    scope: {direction: outbound, host: "*.internal.test"}
+    event: {direction: outbound, host: internal.test, port: 443}
+    matches: false
+    rule: "*.X does not match X itself"
+
+  - name: name-does-not-cover-ip
+    scope: {direction: outbound, host: db.internal.test}
+    event: {direction: outbound, host: 10.0.0.7, port: 5432}
+    matches: false
+    rule: names and addresses are distinct identities — no resolution equivalence
+
+  - name: ip-does-not-cover-name
+    scope: {direction: outbound, host: 10.0.0.7}
+    event: {direction: outbound, host: db.internal.test, port: 5432}
+    matches: false
+    rule: distinct identities, both directions
+
+  - name: ip-literal-exact
+    scope: {direction: outbound, host: 10.0.0.7, port: 5432}
+    event: {direction: outbound, host: 10.0.0.7, port: 5432}
+    matches: true
+    rule: IP literal scopes match IP events exactly
+
+  - name: port-list
+    scope: {direction: outbound, host: api.internal.test, port: [80, 443]}
+    event: {direction: outbound, host: api.internal.test, port: 443}
+    matches: true
+    rule: port lists enumerate
+
+  - name: port-list-miss
+    scope: {direction: outbound, host: api.internal.test, port: [80, 443]}
+    event: {direction: outbound, host: api.internal.test, port: 8443}
+    matches: false
+    rule: port lists are exhaustive
+
+  - name: port-range-lower-bound
+    scope: {direction: outbound, host: api.internal.test, port: "1024-65535"}
+    event: {direction: outbound, host: api.internal.test, port: 1024}
+    matches: true
+    rule: ranges are inclusive at both ends
+
+  - name: port-range-upper-bound
+    scope: {direction: outbound, host: api.internal.test, port: "1024-65535"}
+    event: {direction: outbound, host: api.internal.test, port: 65535}
+    matches: true
+    rule: ranges are inclusive at both ends
+
+  - name: port-range-below
+    scope: {direction: outbound, host: api.internal.test, port: "1024-65535"}
+    event: {direction: outbound, host: api.internal.test, port: 1023}
+    matches: false
+    rule: below the range
+
+  - name: any-host
+    scope: {direction: outbound, host: any}
+    event: {direction: outbound, host: anything.example, port: 1}
+    matches: true
+    rule: any covers every host
+
+  - name: except-subtracts-internal
+    scope: {direction: outbound, host: any, except: ["*.internal.test"]}
+    event: {direction: outbound, host: api.internal.test, port: 443}
+    matches: false
+    rule: except subtracts from the scope
+
+  - name: except-leaves-external
+    scope: {direction: outbound, host: any, except: ["*.internal.test"]}
+    event: {direction: outbound, host: evil.example, port: 443}
+    matches: true
+    rule: outside the exception, the scope applies
+
+  - name: except-on-suffix-scope
+    scope: {direction: outbound, host: "*.test", except: ["*.internal.test"]}
+    event: {direction: outbound, host: api.internal.test, port: 443}
+    matches: false
+    rule: except composes with suffix scopes

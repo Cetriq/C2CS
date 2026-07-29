@@ -6,6 +6,11 @@ shipped when.
 
 ## Unreleased
 
+- **Registry matcher fixtures (2026-07-29):** 50 (scope, event) cases across the four
+  active categories (`conformance/registry/`), exercising suffix and name/IP semantics,
+  `except:` subtraction, port ranges, path prefixes and `..` resolution, basename
+  matching, and environment prefixes. Conformance restructured into three scoped claims:
+  document-schema, registry-matcher, and verification-engine conformant.
 - **Implementer package (2026-07-29):** JSON Schemas for the three document kinds
   (`schema/`, draft 2020-12, strict per version) and the first conformance fixtures
   (`conformance/`): 7 valid documents, 8 invalid documents each naming the rule it
