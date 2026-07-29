@@ -107,6 +107,7 @@ C2CS/
 │   ├── c2cs-schema-v0.1.md    # superseded, kept for history
 │   ├── design/                # ADRs 0001–0013 (all accepted) + index
 │   ├── registry/              # the vocabulary: effect categories, relations, concepts
+│   ├── walkthroughs/          # the five consumers reading the example documents
 │   └── examples/              # one document family: contract, assessments, verdict
 ├── examples/                  # whitepaper case studies (planned)
 └── experiments/               # research experiments (planned)

@@ -63,6 +63,12 @@ consumers; a field no consumer needs is cut:
 2. **`c2cs verify` in CI** — does the implementation conform to the declared contract?
 3. **GRC / compliance report** — what data is processed, what is forbidden, who approved it?
 4. **Architecture view** — operations, data flows, and dependencies across a system.
+5. **Promotion reviewer** — the human deciding an `inferred → declared` promotion (added
+   by walkthrough finding F1: `confidence` and `source` exist for this consumer and no
+   other).
+
+The walkthroughs that execute this rule against the example documents live in
+[`../walkthroughs/`](../walkthroughs/README.md).
 
 Each ADR should also survive an adversarial pass: *how would someone cheat this design?*
 (e.g. `closed` mode with a `*` scope on everything — technically conformant, semantically
