@@ -1,4 +1,4 @@
-# Common Semantic Vocabulary — `c2cs.*`
+# Common Concepts — `c2cs.*`
 
 **The central vocabulary is intentionally tiny.** That is not a limitation of the draft —
 it is the design principle. This document exists to create a small, stable, shared language
