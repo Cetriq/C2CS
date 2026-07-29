@@ -26,3 +26,7 @@ C2CS-reframed-sections.md
 # Python
 __pycache__/
 *.pyc
+
+# .NET build output
+bin/
+obj/

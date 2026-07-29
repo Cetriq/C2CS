@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  spec-fixtures:
+    name: Spec conformance fixtures (structural)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml jsonschema
+      - run: python spec/conformance/tools/check.py
+
+  extractor:
+    name: Extractor build + fixture tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet test extractor/C2CS.Extractor.slnx
+      - name: Extract fixtures assembly and validate against schema
+        run: |
+          dotnet run --project extractor/C2CS.Extractor.Cli -- \
+            extractor/C2CS.Extractor.Tests/bin/Debug/net10.0/C2CS.Extractor.Fixtures.dll \
+            --out /tmp/extraction
+          pip install pyyaml jsonschema
+          python - <<'EOF'
+          import sys, pathlib
+          sys.path.insert(0, "spec/conformance/tools")
+          import check
+          doc = check.load_yaml(pathlib.Path("/tmp/extraction/assessment.c2cs.yaml"))
+          errors = check.validate(doc, check.build_validators())
+          for e in errors: print("ERROR:", e)
+          sys.exit(1 if errors else 0)
+          EOF

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/fixtures/">
+    <Project Path="fixtures/C2CS.Extractor.Fixtures/C2CS.Extractor.Fixtures.csproj" />
+  </Folder>
+  <Project Path="C2CS.Extractor.Cli/C2CS.Extractor.Cli.csproj" />
+  <Project Path="C2CS.Extractor.Core/C2CS.Extractor.Core.csproj" />
+  <Project Path="C2CS.Extractor.DotNet/C2CS.Extractor.DotNet.csproj" />
+  <Project Path="C2CS.Extractor.Tests/C2CS.Extractor.Tests.csproj" />
+</Solution>

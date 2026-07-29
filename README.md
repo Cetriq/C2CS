@@ -96,7 +96,7 @@ verification prototype as the spec's experiment instrument.
 ```
 C2CS/
 ├── README.md
-├── LICENSE                    # CC BY 4.0
+├── LICENSE                    # Apache 2.0 (repo-wide; paper/ is CC BY 4.0)
 ├── paper/
 │   ├── c2cs-whitepaper.md     # the research core
 │   ├── references.bib
@@ -109,10 +109,11 @@ C2CS/
 │   ├── CHANGELOG.md           # release record for the normative artifacts
 │   ├── schema/                # JSON Schemas for the three document kinds
 │   ├── conformance/           # fixtures + implementer guide ("the operative definition")
-│   ├── design/                # ADRs 0001–0013 (all accepted) + index
+│   ├── design/                # ADRs 0001–0014 (all accepted) + index
 │   ├── registry/              # the vocabulary: effect categories, relations, concepts
 │   ├── walkthroughs/          # the five consumers reading the example documents
 │   └── examples/              # one document family: contract, assessments, verdict
+├── extractor/                 # .NET extractor PoC (informative tooling; Mono.Cecil)
 ├── examples/                  # whitepaper case studies (planned)
 └── experiments/               # research experiments (planned)
 ```
