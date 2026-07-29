@@ -1,8 +1,11 @@
-# C2CS .NET extractor — PoC
+# C2CS reference tooling — extractor + serve (PoC)
 
-**Informative tooling** (ADR-0008): this extractor has no conformance authority; the
-fixtures in [`../spec/conformance/`](../spec/conformance/) do. Its single goal is to
-prove the chain
+**Informative tooling** (ADR-0008): nothing here has conformance authority; the
+fixtures in [`../spec/conformance/`](../spec/conformance/) do. This directory hosts the
+two reference tools: **`c2cs-extract`** (this page) and **[`c2cs-serve`](#c2cs-serve--mcp-server)**,
+the MCP server that gives an AI agent the semantic model.
+
+The extractor's single goal is to prove the chain
 
 ```
 compiled .NET assembly → static IL analysis → inferred assessment
@@ -94,3 +97,40 @@ resolved claims / unresolved findings → dedup + confidence → assessment → 
 - ✅ output validates against schema v0.2
 - ✅ deterministically identical output for the same artifact (tested)
 - ✅ fixture suite runs in CI
+
+## c2cs-serve — MCP server
+
+`C2CS.Serve` exposes a C2CS document family (contract + assessments + verdicts) to AI
+agents over MCP (newline-delimited JSON-RPC on stdio; hand-rolled, dependency-light).
+The five tools implement walkthrough 01 directly:
+
+| Tool | Answers |
+|------|---------|
+| `c2cs_overview` | "What am I looking at?" — subject, documents, mode, trust status |
+| `c2cs_contract` | operations, entities/classifications, capabilities and prohibitions with rationale |
+| `c2cs_check_action` | **"May I do X?"** — matches a proposed action against the contract using the registry matcher semantics; answers allowed-by / FORBIDDEN-by (with rationale) / would-be-drift |
+| `c2cs_trust_status` | latest verdict: outcome, coverage, violations, drift, unexercised claims |
+| `c2cs_pending_hypotheses` | inferred claims awaiting promotion review, marked covered / missing |
+
+The matcher engine behind `c2cs_check_action` is implemented from the normative
+artifacts alone and passes **all 50 registry matcher fixtures** — making `c2cs-serve`
+the first *registry-matcher conformant (registry 0.1)* implementation, per the
+conformance suite's own independence test.
+
+Claude Code configuration (`.mcp.json` in your project):
+
+```json
+{
+  "mcpServers": {
+    "c2cs": {
+      "command": "dotnet",
+      "args": ["run", "--project", "/path/to/C2CS/extractor/C2CS.Serve", "--",
+               "--model-dir", "/path/to/your/c2cs-model"]
+    }
+  }
+}
+```
+
+Try it against the reference family: `--model-dir ../spec/examples` — then ask the
+agent "may this service call api.riskvendor.example?" and watch it answer with the
+prohibition's rationale instead of a guess.

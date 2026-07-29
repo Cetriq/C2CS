@@ -68,10 +68,10 @@ empty, and an unknown can never make a verdict *better*.
 
 ## Design
 
-The specification is developed decision-first. Thirteen accepted architecture decision
+The specification is developed decision-first. Fourteen accepted architecture decision
 records in [`spec/design/`](spec/design/README.md) cover the document model, vocabulary,
 verification semantics, trust chain, identity, conformance, governance, the claim model,
-and semantic relations. A few of the axioms:
+semantic relations, and licensing. A few of the axioms:
 
 - *Contracts describe what shall hold. Assessments describe what was inferred or observed.*
 - *A claim has truth conditions; a concept has meaning.*
@@ -85,11 +85,22 @@ The current schema draft is [`spec/c2cs-schema-v0.2.md`](spec/c2cs-schema-v0.2.m
 
 ## Status
 
-Early and honest about it: this is a **pre-1.0 working draft with no implementation yet**.
-What exists today is the whitepaper, the accepted design decisions, schema v0.2, and the
-worked example family. What comes next, in order: the effect registry (the vocabulary that
-makes the semantics *common*), conformance test fixtures, and a first extractor +
-verification prototype as the spec's experiment instrument.
+Early and honest about it: this is a **pre-1.0 working draft**. What exists today:
+
+- the whitepaper, fourteen accepted design decisions, and schema v0.2;
+- the registry (four effect categories, relations, common concepts) with matcher
+  grammars and observation mappings;
+- a conformance suite — JSON Schemas, 15 document fixtures, 50 matcher fixtures, 7
+  golden verification cases — defining three scoped conformance claims;
+- working reference tooling: **`c2cs-extract`** (a .NET static extractor that never
+  guesses — dynamic values become unresolved findings, not claims) and **`c2cs-serve`**
+  (an MCP server so an AI agent can ask *"may I do X?"* and get the contract's answer,
+  with rationale). The serve matcher passes all 50 registry fixtures.
+
+What does not exist yet: a runtime observation harness (verdicts in the examples are
+hand-computed), a verification engine, signed attestations in practice, and — most
+importantly — external implementations and users. If that last item could be you, see
+[Discussion](#discussion).
 
 ## Repository structure
 
@@ -113,7 +124,7 @@ C2CS/
 │   ├── registry/              # the vocabulary: effect categories, relations, concepts
 │   ├── walkthroughs/          # the five consumers reading the example documents
 │   └── examples/              # one document family: contract, assessments, verdict
-├── extractor/                 # .NET extractor PoC (informative tooling; Mono.Cecil)
+├── extractor/                 # reference tooling: c2cs-extract + c2cs-serve (MCP)
 ├── examples/                  # whitepaper case studies (planned)
 └── experiments/               # research experiments (planned)
 ```

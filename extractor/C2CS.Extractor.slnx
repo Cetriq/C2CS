@@ -6,4 +6,6 @@
   <Project Path="C2CS.Extractor.Core/C2CS.Extractor.Core.csproj" />
   <Project Path="C2CS.Extractor.DotNet/C2CS.Extractor.DotNet.csproj" />
   <Project Path="C2CS.Extractor.Tests/C2CS.Extractor.Tests.csproj" />
+  <Project Path="C2CS.Serve.Tests/C2CS.Serve.Tests.csproj" />
+  <Project Path="C2CS.Serve/C2CS.Serve.csproj" />
 </Solution>
