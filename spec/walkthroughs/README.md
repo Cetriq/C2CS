@@ -12,6 +12,7 @@ which fields the consumer touches, and reports friction and gaps as findings.
 | [02](02-verify-in-ci.md) | `c2cs verify` in CI | "Does the implementation conform to the declared contract?" |
 | [03](03-grc-report.md) | GRC / compliance | "What data is processed, what is forbidden, who approved it — and is it holding?" |
 | [04](04-architecture-view.md) | Architecture view | "Show me the system: operations, data, effect surface." |
+| [05](05-stress-kubernetes-operator.md) | Stress test (allowed to fail) | "Describe a Kubernetes operator — and find the model's boundary." |
 
 ## Findings summary
 
@@ -38,6 +39,22 @@ least one consumer (including the promotion reviewer of F1). The closest to unus
 `kind` inside `evaluated_over.assessments` (derivable by dereferencing the digest) — kept,
 because verdicts should be readable without dereferencing (ADR-0003's reproducibility
 intent), but worth rechecking when fixtures exist.
+
+**F5 — semantic tunneling (from the stress test).** Subjects whose effect surface
+tunnels through a platform API (Kubernetes operators, cloud-API-only workloads) get a
+near-empty verifiable core: at the OS boundary, a certificate rotator and a
+cluster-destroyer are indistinguishable. The model's honest current boundary — stated,
+not fixed.
+
+**F6 — specificity ≠ semantics under tunneling.** An exact host:port claim can be
+semantically near-empty, so ADR-0003's specificity indicator misses this case. Candidate
+mitigation recorded in walkthrough 05: flag categories where one claim matched a
+disproportionate share of observed events.
+
+**F7 — platform-boundary categories.** A possible future registry category class (e.g.
+`kubernetes-api` over verbs/resources, observed via the audit log — an existential event
+source). Documented direction; goes through the candidates process after the PoC, per
+the growth-restraint position.
 
 ## Field coverage audit
 
@@ -73,12 +90,8 @@ become executable.
 
 ## Planned
 
-The four walkthroughs above all *succeed*, and they all use the same example — two
-methodological weaknesses called out in review. Planned next:
-
-- **05 — a stress walkthrough that is allowed to fail.** Describe a system the model was
-  not designed around (a Kubernetes operator, PostgreSQL itself, a batch/ETL processor)
-  and record honestly where the model bends or breaks. The goal is a document that says
-  *here is the boundary* — the walkthrough counterpart of `effects/candidates.md`.
 - **A second example family in a different domain** (a CLI tool or a background job
-  worker), so the walkthroughs stop being calibrated to one service shape.
+  worker), so the consumer walkthroughs stop being calibrated to one service shape.
+- **Further stress walkthroughs** in the 05 pattern: PostgreSQL itself (a general-purpose
+  engine whose semantics are parameterized by its input — likely a different failure
+  mode than tunneling) and a batch/ETL processor (dynamic, data-determined scopes).
