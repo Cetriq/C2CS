@@ -1,9 +1,13 @@
 # C2CS Registry — version 0.1 (draft)
 
-The registry is the vocabulary that makes the semantics *common*: the curated Tier-1 effect
-taxonomy, the central Tier-2 concept vocabulary, and the relation vocabulary
-(ADR-0002, ADR-0013). It versions independently of the schema and moves faster — adding a
-category or concept is a registry release, not a schema release (ADR-0007).
+The registry is a **dictionary of official definitions** — the same idea as IANA's
+registries for MIME types and HTTP methods: `GET` is listed in a registry, and nobody gets
+to change what `GET` means. It is not a database and not a schema; it is the list of words
+the whole C2CS ecosystem promises mean the same thing. This is what makes the semantics
+*common*: the curated Tier-1 effect taxonomy, the common Tier-2 vocabulary, and the
+relation vocabulary (ADR-0002, ADR-0013). It versions independently of the schema and
+moves faster — adding a category or concept is a registry release, not a schema release
+(ADR-0007).
 
 **Status: draft.** Per ADR-0003, a registry entry is not complete until conformance
 fixtures exercise its meaning; the fixtures ship with the conformance suite, which does not
@@ -15,7 +19,7 @@ exist yet. Until then, registry 0.1 is a draft for review, not a released vocabu
 |---------|---------|
 | [`effects/`](effects/) — Tier-1 categories | `network`, `filesystem`, `process`, `environment` (active) · [`candidates`](effects/candidates.md): `persistent-storage`, `ipc` (not admitted) |
 | [`relations.md`](relations.md) — relation vocabulary | `c2cs.rel.uses`, `reads`, `writes`, `owns`, `triggers`, `derives-from`, `processes` |
-| [`concepts.md`](concepts.md) — central Tier-2 concepts | `c2cs.data.*` seed classifications |
+| [`concepts.md`](concepts.md) — Common Semantic Vocabulary | `c2cs.data.*` seed classifications |
 
 ## Entry format (Tier-1 categories)
 
