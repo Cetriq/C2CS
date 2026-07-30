@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2CS — Software is no longer scarce. Understanding is.</title>
+<meta name="description" content="C2CS (Code to Common Semantics) is an open, in-progress standard for describing what software actually does — so people, organizations, and AI can check it.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <span class="wordmark">C2CS</span>
+    <nav>
+      <a href="#problem">The problem</a>
+      <a href="#idea">The idea</a>
+      <a href="#honest">Why trust it</a>
+      <a href="#today">Status</a>
+      <a href="#manifesto">Manifesto</a>
+      <a href="https://github.com/Cetriq/C2CS">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Code to Common Semantics — an open standard in the making</p>
+    <h1>Software is no longer scarce.<br>Understanding is.</h1>
+    <p class="lead">
+      AI can now write more code than any team can read. The question that decides
+      whether you can trust that code is no longer <em>does it work?</em> — it is
+      <em>what does it actually do?</em>
+    </p>
+    <p class="lead">
+      C2CS is an open, in-progress standard for answering that question: a
+      machine-readable way to state what a piece of software <strong>may do</strong>,
+      record what it <strong>appears to do</strong> and what it <strong>was seen
+      doing</strong> — and check whether the three agree.
+    </p>
+    <p class="cta">
+      <a class="button" href="https://github.com/Cetriq/C2CS">Read the spec on GitHub</a>
+      <a class="button ghost" href="https://doi.org/10.5281/zenodo.20780441">Research whitepaper (DOI)</a>
+    </p>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <h2>The problem, in plain words</h2>
+    <p>
+      Picture a service your organization runs. An AI wrote most of it. It passes its
+      tests. It works. And one Tuesday it quietly starts sending data to a telemetry
+      vendor nobody ever approved.
+    </p>
+    <p>
+      Nothing "broke". No test failed. The behavior was simply never part of what anyone
+      <em>decided</em> — and there was no place where that decision lived, so there was
+      nothing to check the running system against. Today, you find this in an incident
+      review. If ever.
+    </p>
+    <p>
+      The supply-chain world has learned to describe two of the three things that matter
+      about software:
+    </p>
+    <table>
+      <tr><td>SBOM</td><td>what the software <strong>consists of</strong></td><td class="ok">standardized</td></tr>
+      <tr><td>SLSA</td><td>how the software <strong>was built</strong></td><td class="ok">standardized</td></tr>
+      <tr><td><strong>?</strong></td><td>what the software <strong>does</strong></td><td class="gap">missing</td></tr>
+    </table>
+    <p>
+      That third row is what C2CS is for. Not documentation that goes stale — a
+      machine-checkable statement of behavior.
+    </p>
+  </div>
+</section>
+
+<section id="idea" class="alt">
+  <div class="wrap">
+    <h2>The idea: three documents, honestly separated</h2>
+    <p>
+      Think of it like a rental agreement for software behavior. The lease says what is
+      allowed. Inspections record what was observed. And a report says whether they
+      agree. C2CS keeps these three strictly apart, because they are three different
+      kinds of statement:
+    </p>
+    <div class="cards">
+      <div class="card">
+        <h3>Contract</h3>
+        <p class="tag">what shall hold</p>
+        <p>Written and approved by people, kept in the repo, reviewed like code. It
+        declares capabilities ("may talk to the internal database"), prohibitions
+        ("must never send data outside the internal zone — and here is why"), and the
+        business meaning: operations, data, classifications.</p>
+      </div>
+      <div class="card">
+        <h3>Assessment</h3>
+        <p class="tag">what it appears to do · what it was seen doing</p>
+        <p>Produced by tools. Either <em>inferred</em> from the code — a hypothesis with
+        a stated confidence — or <em>observed</em> at runtime, with evidence. A tool
+        that couldn't analyze something says <code>unknown</code>. It never bluffs.</p>
+      </div>
+      <div class="card">
+        <h3>Verdict</h3>
+        <p class="tag">do they agree?</p>
+        <p>A deterministic comparison of contract against observations: confirmed,
+        not observed, <strong>drift</strong> (undeclared behavior), or
+        <strong>violation</strong> (a prohibition was broken). Same inputs, same
+        verdict — from any conforming tool.</p>
+      </div>
+    </div>
+
+    <h3 class="mt">What it looks like</h3>
+    <p>A contract fragment — the prohibition that would have caught the Tuesday incident:</p>
+<pre><code>forbidden:
+  - id: forb.net.external
+    category: network
+    match: {direction: outbound, host: any, except: ["*.internal.acme.example"]}
+    rationale: Customer data must not leave the internal zone.
+    by: claes@acme.example</code></pre>
+    <p>And the verdict, after a runtime observation caught the undeclared connection:</p>
+<pre><code>results:
+  forbidden:
+    - claim: forb.net.external
+      verdict: violation
+      matched: ["sha256:aa11…#obs.net.9"]   # traceable to the exact evidence
+overall:
+  outcome: not-conformant</code></pre>
+
+    <h3 class="mt">And for AI agents, it becomes an answer</h3>
+    <p>
+      A coding agent connected to the model (via MCP) doesn't have to guess what your
+      system is allowed to do. It asks:
+    </p>
+<pre><code>&gt; May this service call api.riskvendor.example?
+
+FORBIDDEN by forb.net.external
+  — rationale: Customer data must not leave the internal zone.
+Do not implement this without a contract change approved by a human.</code></pre>
+    <p>
+      The agent gets the <em>why</em>, not just the rule — and the change request goes
+      to a person, not into production.
+    </p>
+  </div>
+</section>
+
+<section id="honest">
+  <div class="wrap">
+    <h2>Why you can take this seriously</h2>
+    <p>
+      Every security pitch claims too much. This one is built around what <em>cannot</em>
+      be done:
+    </p>
+    <ul>
+      <li><strong>We do not claim to divine intent from arbitrary code.</strong> That is
+      mathematically impossible (Rice's theorem), and any tool promising it is wrong.
+      C2CS splits the problem instead: inferring what code probably does is best-effort
+      and clearly labeled as hypothesis; checking observed behavior against a declared
+      contract is tractable engineering — and that is the part that gets verified.</li>
+      <li><strong>"We don't know" is a first-class answer.</strong> A category a tool
+      didn't analyze is <code>unknown</code> — never silently empty. An unknown can make
+      a verdict worse, never better. No false green lights.</li>
+      <li><strong>The rejections are published.</strong> The vocabulary registry documents
+      what was <em>refused</em> and why — categories, relations, classifications that
+      seemed reasonable on the drawing board but failed the admission tests. Words earn
+      their place through use, not through plausibility.</li>
+      <li><strong>Conformance is defined by fixtures, not by our tools.</strong> Anyone
+      can build an independent implementation from the published schemas, registry, and
+      test fixtures alone — and prove it behaves identically. Our own reference tools
+      have no special status.</li>
+      <li><strong>The model's limits are documented by us, first.</strong> Our own
+      boundary test shows where the approach thins out (systems that do all their work
+      through one cloud API), published in the spec rather than discovered by critics.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="today" class="alt">
+  <div class="wrap">
+    <h2>Where it stands today</h2>
+    <p class="tag">Honest status, updated as it changes. This is early-stage work.</p>
+    <div class="cols">
+      <div>
+        <h3>Exists and works</h3>
+        <ul>
+          <li>The specification: schema, 14 argued design decisions, governance</li>
+          <li>The vocabulary registry: four effect categories with precise matching rules</li>
+          <li>A conformance suite: 70+ fixtures any implementation can test against</li>
+          <li><code>c2cs-extract</code> — a .NET analyzer that reads a compiled binary and
+          drafts claims, and <em>refuses to guess</em> when values are dynamic</li>
+          <li><code>c2cs-serve</code> — an MCP server that lets an AI agent ask
+          "may I do X?" and get the contract's answer</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Doesn't exist yet</h3>
+        <ul>
+          <li>A runtime observation harness (example verdicts are hand-computed)</li>
+          <li>A verification engine implementing the full verdict semantics</li>
+          <li>Signed attestations in practice</li>
+          <li>Extractors for languages beyond .NET</li>
+          <li><strong>External implementations and users — the thing that makes a
+          standard a standard.</strong> That could be you.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="manifesto">
+  <div class="wrap narrow">
+    <h2>The manifesto</h2>
+    <blockquote>
+      <p>Software is no longer scarce. Understanding is.</p>
+      <p>The age of AI changes the bottleneck of software engineering. We no longer
+      struggle to produce code. We struggle to understand, verify, and govern it.</p>
+      <p>We believe software needs a shared semantic representation — not just for
+      humans, but for AI. We believe intent should be declared and approved by people,
+      behavior should be observed by tools, and the comparison between them should be
+      deterministic and open.</p>
+      <p>We believe a standard must be honest about what cannot be known: <em>unknown</em>
+      is information, hypotheses are not facts, and no signature makes a statement true —
+      it only proves who made it.</p>
+      <p>And we believe none of this should belong to any single vendor. The words that
+      describe software behavior should mean the same thing everywhere, forever.</p>
+    </blockquote>
+  </div>
+</section>
+
+<section id="join" class="alt">
+  <div class="wrap">
+    <h2>Argue with us</h2>
+    <p>
+      This is a research initiative becoming a standard, not a finished product — and the
+      design is meant to be argued with. Three invitations:
+    </p>
+    <ul>
+      <li><strong>Tool builders:</strong> the <a href="https://github.com/Cetriq/C2CS/tree/main/spec/conformance">conformance
+      suite</a> lets you build an extractor, validator, or verifier for your language
+      and prove it conforms — without reading a line of our code. The first external
+      implementation is the moment this stops being our opinion and becomes an
+      agreement.</li>
+      <li><strong>Security &amp; GRC people:</strong> read the
+      <a href="https://github.com/Cetriq/C2CS/blob/main/spec/walkthroughs/03-grc-report.md">compliance
+      walkthrough</a> — policy → approval → observation → evidence in one document
+      chain — and tell us where it breaks for your reality.</li>
+      <li><strong>Researchers:</strong> the <a href="https://doi.org/10.5281/zenodo.20780441">whitepaper</a>
+      carries the open question: can LLM-inferred semantics produce meaningfully tighter
+      least-privilege policy than behavioral traces? The confidence model is designed to
+      be measured against verdicts. Help us measure it.</li>
+    </ul>
+    <p>
+      Everything happens in the open: <a href="https://github.com/Cetriq/C2CS">github.com/Cetriq/C2CS</a>
+      — issues welcome, changes via public RFC process.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      C2CS — Code to Common Semantics ·
+      <a href="https://github.com/Cetriq/C2CS">GitHub</a> ·
+      <a href="https://doi.org/10.5281/zenodo.20780441">DOI 10.5281/zenodo.20780441</a>
+    </p>
+    <p class="fine">
+      Specification and tooling under Apache 2.0; whitepaper under CC BY 4.0.
+      Use of the C2CS name and conformance claims is governed by the
+      <a href="https://github.com/Cetriq/C2CS/blob/main/TRADEMARKS.md">trademark policy</a>.
+      No certification program exists; nothing here is "certified".
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
